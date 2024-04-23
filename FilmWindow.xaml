@@ -7,6 +7,41 @@
         mc:Ignorable="d"
         Title="FilmWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button Grid.Column="4" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8"/>
+        <Image Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="149" Margin="61,43,0,0" Grid.RowSpan="3" VerticalAlignment="Top" Width="119"/>
+        <TextBox x:Name="FilmName" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="37,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="380"/>
+        <TextBox x:Name="FilmDetails" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="37,59,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="380"/>
+        <TextBox x:Name="FilmDetailsOtherData" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="37,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="380" Grid.Row="1"/>
+        <Button Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TabControl Grid.Row="2" Margin="24,24,33,10" Grid.ColumnSpan="5" Grid.RowSpan="3">
+            <TabItem Header="Рецензия">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Обсуждения">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </Window>

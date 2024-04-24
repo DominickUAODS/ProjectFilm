@@ -6,25 +6,26 @@
         xmlns:local="clr-namespace:ProjectFilm"
         mc:Ignorable="d"
         Title="UserWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <StackPanel Margin="0,0,0,10" Grid.RowSpan="4" Grid.Row="1"/>
-        <TextBox Grid.Column="2" HorizontalAlignment="Center" Margin="0,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="460"/>
-        <Button Grid.Column="4" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451"/>
-        <Button Grid.Column="4" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8"/>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<StackPanel Margin="0,0,0,10" Grid.RowSpan="4" Grid.Row="1"/>
+		<Button x:Name="SearchButton" Grid.Column="4" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" Click="SearchButton_Click"/>
+		<Button x:Name="UserProfileButton" Grid.Column="4" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8" Click="UserProfileButton_Click"/>
+		<Button Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="BackButton_Click"/>
+		<TextBox x:Name="SearchTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="17,52,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="450" Grid.ColumnSpan="3"/>
 
-    </Grid>
+	</Grid>
 </Window>

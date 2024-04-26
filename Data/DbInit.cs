@@ -8,15 +8,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace ProjectFilm.Data
 {
     public class DbInit
     {
-        public static async Task EnsurePopulate(ApplicationDbContext context)
+
+        public static DbContextOptions<ApplicationDbContext> ConnectToJason() //new
         {
+            var builder = new ConfigurationBuilder();
+            builder.SetBasePath(Directory.GetCurrentDirectory());
+            builder.AddJsonFile("Connection.json");
+            var config = builder.Build();
+
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var options = optionsBuilder
+                .UseSqlServer(config.GetConnectionString("DefaultConnection"))
+                .Options;
+            return options; 
+        }
+        public static async Task EnsurePopulate()
+        {
+            var context = new ApplicationDbContext(ConnectToJason());
             if (!(context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
             {
+                
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
             }

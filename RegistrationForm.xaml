@@ -22,13 +22,13 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="1" x:Name="labelWelcome" Text="We welcome you to our community!" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Cascadia Mono SemiBold" FontSize="24" FontWeight="Bold" Height="28" Width="475" Margin="15,0,0,0"/>
         <TextBlock Grid.Row="2" x:Name="labelEnterEmail" Text="Enter email" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Cascadia Mono SemiBold" FontSize="14" FontWeight="Bold" Margin="76,13,0,0" />
-        <TextBox Grid.Row ="3" x:Name ="txtBoxForEmail" HorizontalAlignment="Left" Margin="75,0,0,0"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="343" RenderTransformOrigin="0.263,-0.457" Height="33"/>
+        <TextBox Grid.Row ="3" x:Name ="txtBoxForEmail" HorizontalAlignment="Left" Margin="75,0,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="343" RenderTransformOrigin="0.263,-0.457" Height="33"/>
         <TextBlock Grid.Row="4" x:Name="labelEnterLogin" Text="Enter login" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Cascadia Mono SemiBold" FontSize="14" FontWeight="Bold" Margin="76,13,0,0" />
-        <TextBox Grid.Row ="5" x:Name ="txtBoxForLoginl" HorizontalAlignment="Left" Margin="75,0,0,0"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="343" RenderTransformOrigin="0.263,-0.457" Height="33"/>
-        <TextBlock Grid.Row="6" x:Name="labelForPassword" Text="Enter login" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Cascadia Mono SemiBold" FontSize="14" FontWeight="Bold" Margin="76,13,0,0" />
-        <TextBox Grid.Row ="7" x:Name ="txtBoxForPassword" HorizontalAlignment="Left" Margin="75,0,0,0"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="343" RenderTransformOrigin="0.263,-0.457" Height="33"/>
-        <Button Grid.Row="8" x:Name="buttonSignIn"  Content="Sign In" HorizontalAlignment="Center" VerticalAlignment="Center" Width="182" Height="39" Foreground="#FFFFFEFE" Background="#FF8EB9ED" BorderBrush="{x:Null}" FontFamily="Cascadia Mono SemiBold" FontSize="20"/>
-		<Label x:Name="labelQuestion" Content="Already have account?" HorizontalAlignment="Left" Margin="269,0,0,0" Grid.Row="9" VerticalAlignment="Center" Width="164" FontFamily="Cascadia Mono SemiBold" FontSize="12"/>
-		<Label Content="Label" HorizontalAlignment="Left" Margin="131,25,0,0" Grid.Row="5" VerticalAlignment="Top"/>
-	</Grid>
+        <TextBox Grid.Row ="5" x:Name ="txtBoxForLoginl" HorizontalAlignment="Left" Margin="75,0,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="343" RenderTransformOrigin="0.263,-0.457" Height="33"/>
+        <TextBlock Grid.Row="6" x:Name="labelForPassword" Text="Enter password" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Cascadia Mono SemiBold" FontSize="14" FontWeight="Bold" Margin="76,13,0,0" />
+        <TextBox Grid.Row ="7" x:Name ="txtBoxForPassword" HorizontalAlignment="Left" Margin="75,0,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="343" RenderTransformOrigin="0.263,-0.457" Height="33"/>
+        <Button  Click="SignInButton_Click" Grid.Row="8" x:Name="buttonSignIn"  Content="Sign In" HorizontalAlignment="Center" VerticalAlignment="Center" Width="182" Height="39" Foreground="#FFFFFEFE" Background="#FF8EB9ED" BorderBrush="{x:Null}" FontFamily="Cascadia Mono SemiBold" FontSize="20"/>
+        <Label x:Name="labelQuestion" Content="Already have account?" HorizontalAlignment="Left" Margin="255,0,0,0" Grid.Row="9" VerticalAlignment="Center" Width="160" FontFamily="Cascadia Mono SemiBold" FontSize="12"/>
+        <Button  Click="GoToLogInButton_Click" Content ="Log In" x:Name ="GoToLogInButton" HorizontalAlignment="Left" Margin="420,0,0,0" Grid.Row="9" VerticalAlignment="Center" RenderTransformOrigin="-4.48,0.074"  Foreground="#FFFFFEFE" Background="#FF8EB9ED" BorderBrush="{x:Null}" FontFamily="Cascadia Mono SemiBold" FontSize="15"/>
+    </Grid>
 </Window>

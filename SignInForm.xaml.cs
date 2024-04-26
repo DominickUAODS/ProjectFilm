@@ -1,4 +1,8 @@
-﻿using System;
+﻿using ProjectFilm.Data;
+using ProjectFilm.Helpers;
+using ProjectFilm.Repository;
+using ProjectFilm.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +23,56 @@ namespace ProjectFilm
     /// </summary>
     public partial class SignInForm : Window
     {
+        public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
+        UserRepository userRepository = new UserRepository(context);
+
         public SignInForm()
         {
             InitializeComponent();
         }
+
+        public void GoToSignInButton_Click(object sender, RoutedEventArgs e)
+        {
+            RegistrationForm registration= new RegistrationForm();
+            registration.Show();
+            Close();
+
+        }
+
+        public async void buttonLogIn_Click(object sender, RoutedEventArgs e)
+        {
+            UserViewModel uv = new UserViewModel
+            {
+                Email = txtBoxForEmail.Text,
+                Password = txtBoxForPaasword.Text
+
+            };
+
+            bool flag = await userRepository.SignInAsync(uv);
+            if(!flag)
+            {
+                string invalid = "Invalid email or password!";
+                labelForEmail.Text = invalid;
+                labelForPassword.Text = invalid;
+                ResetLabel(labelForEmail);
+                ResetLabel(labelForPassword);
+            }
+            else
+            {
+                MessageBox.Show("Ok");
+                //переход на форму
+            }
+
+
+        }
+
+        private void ResetLabel(TextBlock label)
+        {
+            label.Foreground = Brushes.Red;
+            label.FontSize = 16;
+            label.VerticalAlignment = VerticalAlignment.Top;
+            label.Height = 40;
+        }
+
     }
 }

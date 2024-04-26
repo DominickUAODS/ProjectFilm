@@ -17,6 +17,7 @@ using ProjectFilm.ViewModels;
 using System.Diagnostics.Eventing.Reader;
 using ProjectFilm.Data;
 using ProjectFilm.Repository;
+using System.Windows.Navigation;
 
 namespace ProjectFilm
 {
@@ -37,7 +38,7 @@ namespace ProjectFilm
 
         public async void SignInButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!helper.IsEnglishLettersAndNumbers(txtBoxForLoginl.Text))
+            if (helper.IsEnglishLettersAndNumbers(txtBoxForLoginl.Text))
             {
                 RegisterViewModel uv = new RegisterViewModel
                 {
@@ -46,32 +47,51 @@ namespace ProjectFilm
                     UserName = txtBoxForLoginl.Text
                 };
 
-                if(uv != null)
+                if (uv != null)
                 {
-                    if(await helper.IsEquelLogin(uv))
+                    if (await helper.IsEquelLogin(uv))
                     {
-                        labelEnterLogin.Text = "This login already exists in our system. Please come up with another one.";
-                        labelEnterLogin.Background = Brushes.Red;
+                        labelEnterLogin.Text = "This login already exists in our system.";
+                        ResetLabel(labelEnterLogin);
                     }
                     else if (await helper.IsAlreadyInBaseByEmail(uv))
                     {
-                        labelEnterLogin.Text = "This email already exists in our system. You want to log in?";
-                        labelEnterLogin.Background = Brushes.Red;
+                        labelEnterEmail.Text = "This email already exists in our system.";
+                        ResetLabel(labelEnterEmail);
+                    }
+                    else if(!helper.IsValidEmail(txtBoxForEmail.Text))
+                    {
+                        labelEnterEmail.Text = "Please, enter valid email.";
+                        ResetLabel(labelEnterEmail);
                     }
                     else
                     {
-                       await userRepository.RegisterAsync(uv);
-                        MessageBox.Show("Welcome!");
+                        await userRepository.RegisterAsync(uv);
+                        MessageBox.Show("Welcome!"); //переход на другую форму
                     }
                 }
-                
             }
-            else 
+            else
             {
-                labelEnterLogin.Text = "Invalid LogIn. Please use English letters and numbers.";
-                labelEnterLogin.Background = Brushes.Red;
-            
+                labelEnterLogin.Text = "Invalid LogIn.Please use English letters and numbers.";
+                ResetLabel(labelEnterLogin);
             }
+        }
+
+        private void ResetLabel(TextBlock label)
+        {
+            label.Foreground = Brushes.Red;
+            label.FontSize = 12;
+            label.VerticalAlignment = VerticalAlignment.Top;
+            label.Height = 40;
+        }
+
+        public void GoToLogInButton_Click(object sender, RoutedEventArgs e)
+        {
+            SignInForm signInForm = new SignInForm();
+            signInForm.Show();
+            Close();
+
         }
     }
 }    

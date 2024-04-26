@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjectFilm.Helpers
@@ -20,14 +21,26 @@ namespace ProjectFilm.Helpers
         }
         public bool IsEnglishLettersAndNumbers(string input)
         {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
             foreach (char c in input)
             {
-                if (!char.IsLetterOrDigit(c) || char.IsUpper(c))
+                if (!char.IsLetterOrDigit(c)) 
                 {
                     return false;
                 }
             }
+
             return true;
+        }
+
+        public  bool IsValidEmail(string email)
+        {
+            string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+            return Regex.IsMatch(email, pattern);
         }
 
         public async Task<bool> IsAlreadyInBaseByEmail(RegisterViewModel user)

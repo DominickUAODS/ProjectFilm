@@ -59,7 +59,7 @@ namespace ProjectFilm
                         labelEnterEmail.Text = "This email already exists in our system.";
                         ResetLabel(labelEnterEmail);
                     }
-                    else if(!helper.IsValidEmail(txtBoxForEmail.Text))
+                    else if (!helper.IsValidEmail(txtBoxForEmail.Text))
                     {
                         labelEnterEmail.Text = "Please, enter valid email.";
                         ResetLabel(labelEnterEmail);
@@ -92,6 +92,23 @@ namespace ProjectFilm
             signInForm.Show();
             Close();
 
+        }
+
+        public void buttonSee_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (psBoxForPassword.Visibility == Visibility.Visible)
+            {
+                psBoxForPassword.Visibility = Visibility.Collapsed;
+                txtBoxForPassword.Visibility = Visibility.Visible;
+                txtBoxForPassword.Text = psBoxForPassword.Password;
+            }
+            else
+            {
+                psBoxForPassword.Visibility = Visibility.Visible;
+                txtBoxForPassword.Visibility = Visibility.Collapsed;
+                psBoxForPassword.Password = txtBoxForPassword.Text;
+            }
         }
     }
 }    

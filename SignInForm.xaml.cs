@@ -35,7 +35,7 @@ namespace ProjectFilm
         {
             RegistrationForm registration= new RegistrationForm();
             registration.Show();
-            Close();
+            Hide();
 
         }
 
@@ -44,7 +44,7 @@ namespace ProjectFilm
             UserViewModel uv = new UserViewModel
             {
                 Email = txtBoxForEmail.Text,
-                Password = txtBoxForPaasword.Text
+                Password = txtBoxForPaasword.Password
 
             };
 

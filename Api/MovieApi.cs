@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using System.Net.Http;
+using System.IO;
+using ProjectFilm.Model;
+using Microsoft.Extensions.Configuration;
 
-namespace FilmLibrary.Api
+namespace ProjectFilm.Api
 {
     public class MovieApi
-
     {
-
         private static async Task<T> SendApi<T>(string query)
-
         {
 
             string apiKey = GetMovieApiKey();
@@ -23,30 +18,19 @@ namespace FilmLibrary.Api
             HttpResponseMessage responseMessage = await httpClient.GetAsync(query + $"&api_key={apiKey}");
 
             if (responseMessage.IsSuccessStatusCode)
-
             {
-
                 var result = await responseMessage.Content.ReadFromJsonAsync<T>();
-
                 return result;
-
             }
-
             else
-
             {
-
                 throw new Exception("Error. Try again later.");
-
             }
-
         }
 
         private static string GetMovieApiKey()
-
         {
-
-            var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder();
+            var builder = new ConfigurationBuilder();
 
             // установка пути к текущему каталогу 
 
@@ -65,144 +49,80 @@ namespace FilmLibrary.Api
             var connectionString = config.GetSection("MovieApi:ApiKey");
 
             return connectionString.Value;
-
         }
 
 
-
         /// <summary> 
-
         /// Get Popular MovieList With Page 
-
         /// </summary> 
-
         /// <param name="page">Current page number</param> 
-
         /// <returns></returns> 
-
         public static async Task<Movies> GetPopularMovies(int page = 1)
-
         {
-
             return await SendApi<Movies>($"https://api.themoviedb.org/3/movie/popular?language=ru-ru&page={page}&include_adult=true");
-
         }
-
         /// <summary> 
-
         /// Get Similar MovieList With Page 
-
         /// </summary> 
-
         /// <param name="movieId">Current movie id</param> 
-
         /// <param name="page">Current page number</param> 
-
         /// <returns></returns> 
-
         public static async Task<Movies> GetSimilarMovies(int movieId, int page = 1)
-
         {
-
             return await SendApi<Movies>($"https://api.themoviedb.org/3/movie/{movieId}/similar?&language=ru-ru&page={page}&include_adult=true");
-
         }
 
         /// <summary> 
-
         /// Get MovieList By Year and Name With Page 
-
         /// </summary> 
-
         /// <param name="name">Movie name to search</param> 
-
         /// <param name="year">Movie release year</param> 
-
         /// <param name="page">Current page number</param> 
-
         /// <returns></returns> 
-
         public static async Task<Movies> GetMoviesByYearAndName(string name, int year, int page = 1)
-
         {
-
             return await SendApi<Movies>($"https://api.themoviedb.org/3/search/movie?language=ru-ru&query={name}&page={page}&include_adult=false&year={year}");
-
         }
 
         /// <summary> 
-
         /// Get MovieList By Name With Page 
-
         /// </summary> 
-
         /// <param name="name">Movie name to search</param> 
-
         /// <param name="page">Current page number</param> 
-
         /// <returns></returns> 
-
         public static async Task<Movies> GetMoviesByName(string name, int page = 1)
-
         {
-
             return await SendApi<Movies>($"https://api.themoviedb.org/3/search/movie?language=ru-ru&query={name}&page={page}&include_adult=true");
-
         }
 
         /// <summary> 
-
         /// Get MovieList By Genre With Page 
-
         /// </summary> 
-
         /// <param name="genreId">Genre id form movies search</param> 
-
         /// <param name="page">Current page number</param> 
-
         /// <returns></returns> 
-
         public static async Task<Movies> GetMoviesByGenre(int genreId, int page = 1)
-
         {
-
             return await SendApi<Movies>($"https://api.themoviedb.org/3/discover/movie?with_genres={genreId}&page={page}&include_adult=true?language=ru-ru");
-
         }
 
         /// <summary> 
-
         /// Get Movie By Id 
-
         /// </summary> 
-
         /// <param name="id">Current movie Id</param> 
-
         /// <returns></returns> 
-
         public static async Task<Movie> GetMovieById(int id)
-
         {
-
             return await SendApi<Movie>($"https://api.themoviedb.org/3/movie/{id}?language=ru-ru");
-
         }
 
         /// <summary> 
-
         /// Get Genre List 
-
         /// </summary> 
-
         /// <returns></returns> 
-
         public static async Task<Genres> GetGenreList()
-
         {
-
             return await SendApi<Genres>("https://api.themoviedb.org/3/genre/movie/list?language=ru-ru");
-
         }
-
     }
 }

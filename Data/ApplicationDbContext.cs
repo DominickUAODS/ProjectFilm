@@ -1,23 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using ProjectFilm.Model;
 
 namespace ProjectFilm.Data
 {
     public class ApplicationDbContext : DbContext
     {
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-
 
 
         public DbSet<User> Users { get; set; }
@@ -35,6 +25,5 @@ namespace ProjectFilm.Data
                 .HasMany(r => r.Reviews)
                 .WithOne(u=>u.user);
         }
-
     }
 }

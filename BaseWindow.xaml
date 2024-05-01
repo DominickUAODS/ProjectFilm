@@ -22,70 +22,49 @@
 			<RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		<StackPanel x:Name="CategoryPanel" Grid.Row="1" Margin="0,0,0,10" Grid.RowSpan="4" Grid.ColumnSpan="2"/>
-		<Button x:Name="SearchButton" Grid.Column="5" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" Click="SearchButton_Click"/>
-		<Button x:Name="UserProfileButton" Grid.Column="5" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8" Click="UserProfileButton_Click"/>
-		<!--<DataGrid Grid.Column="1" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="4" Margin="10,0,10,10" Grid.RowSpan="4"/>-->
-		<DataGrid Grid.Column="2" Name="FilmDataGrid" AutoGenerateColumns="False" Margin="7,10,7,10" Grid.RowSpan="3" Grid.Row="1" MouseDoubleClick="FilmDataGrid_MouseDoubleClick">
-			<!-- Столбцы для названия и изображения -->
-			<DataGridTemplateColumn Header="Film">
-				<DataGridTemplateColumn.CellTemplate>
-					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<Image Source="{Binding ImagePath}" Width="100" Height="150" Margin="10"/>
-							<TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
-						</StackPanel>
-					</DataTemplate>
-				</DataGridTemplateColumn.CellTemplate>
-			</DataGridTemplateColumn>
-		</DataGrid>
-		<!-- Элементы управления для пагинации -->
-		<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,21" Grid.Row="4">
-			<Button x:Name="PreviousButton" Content="Previous" Click="PreviousPage_Click" Margin="5"/>
-			<TextBlock Name="PageInfo" Text="Page 1" Margin="5"/>
-			<Button x:Name="NextPage" Content="Next" Click="NextPage_Click" Margin="5"/>
-		</StackPanel>
-		<DataGrid Grid.Column="3" x:Name="FilmDataGrid_Copy" AutoGenerateColumns="False" Margin="5,10,5,10" Grid.RowSpan="3" Grid.Row="1" MouseDoubleClick="FilmDataGrid_MouseDoubleClick">
-			<!-- Столбцы для названия и изображения -->
-			<DataGridTemplateColumn Header="Film">
-				<DataGridTemplateColumn.CellTemplate>
-					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<Image Source="{Binding ImagePath}" Width="100" Height="150" Margin="10"/>
-							<TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
-						</StackPanel>
-					</DataTemplate>
-				</DataGridTemplateColumn.CellTemplate>
-			</DataGridTemplateColumn>
-		</DataGrid>
-		<DataGrid Grid.Column="4" x:Name="FilmDataGrid_Copy1" AutoGenerateColumns="False" Margin="5,10,5,10" Grid.RowSpan="3" Grid.Row="1" Width="150" MouseDoubleClick="FilmDataGrid_MouseDoubleClick">
-			<!-- Столбцы для названия и изображения -->
-			<DataGridTemplateColumn Header="Film">
-				<DataGridTemplateColumn.CellTemplate>
-					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<Image Source="{Binding ImagePath}" Width="100" Height="150" Margin="10"/>
-							<TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
-						</StackPanel>
-					</DataTemplate>
-				</DataGridTemplateColumn.CellTemplate>
-			</DataGridTemplateColumn>
-		</DataGrid>
-		<DataGrid Grid.Column="5" x:Name="FilmDataGrid_Copy2" AutoGenerateColumns="False" Margin="5,10,5,10" Grid.RowSpan="3" Grid.Row="1" Width="150" MouseDoubleClick="FilmDataGrid_MouseDoubleClick">
-			<!-- Столбцы для названия и изображения -->
-			<DataGridTemplateColumn Header="Film">
-				<DataGridTemplateColumn.CellTemplate>
-					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<Image Source="{Binding ImagePath}" Width="100" Height="150" Margin="10"/>
-							<TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
-						</StackPanel>
-					</DataTemplate>
-				</DataGridTemplateColumn.CellTemplate>
-			</DataGridTemplateColumn>
-		</DataGrid>
-		<Label Content="Films categories" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" FontSize="10" Grid.ColumnSpan="2"/>
-		<TextBox x:Name="SearchTextBox" Grid.Column="2" HorizontalAlignment="Left" Margin="17,52,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="450" Grid.ColumnSpan="3"/>
+		
+		<StackPanel x:Name="CategoryPanel" Margin="0,15,0,15" Grid.RowSpan="5" Grid.ColumnSpan="2" Background="LightBlue"/>
+		
+		<Button x:Name="SearchButton" Grid.Column="5" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" Click="SearchButton_Click" Background="LightBlue"/>
+		
+		<Button x:Name="UserProfileButton" Grid.Column="5" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8" Click="UserProfileButton_Click" Background="LightBlue"/>
 
+		<Button x:Name="FilmButton0" Grid.Column="2" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="LightBlue" Click="FilmButton_Click">
+			<Grid>
+				<Image Source="{Binding poster_path}" Width="150" Margin="0,5,0,40"/>
+				<TextBlock Text="{Binding title}" Margin="0,238,0,5" Height="30" TextAlignment="Center" FontSize="10" TextWrapping="Wrap" Width="150"/>
+			</Grid>
+		</Button>
+
+		<Button x:Name="FilmButton1" Grid.Column="3" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="LightBlue" Click="FilmButton_Click">
+			<Grid>
+				<Image Source="{Binding poster_path}" Width="150" Margin="0,5,0,40"/>
+				<TextBlock Text="{Binding title}" Margin="0,238,0,5" Height="30" TextAlignment="Center" FontSize="10" TextWrapping="Wrap" Width="150"/>
+			</Grid>
+		</Button>
+
+		<Button x:Name="FilmButton2" Grid.Column="4" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="LightBlue" Click="FilmButton_Click">
+			<Grid>
+				<Image Source="{Binding poster_path}" Width="150" Margin="0,5,0,40"/>
+				<TextBlock Text="{Binding title}" Margin="0,238,0,5" Height="30" TextAlignment="Center" FontSize="10" TextWrapping="Wrap" Width="150"/>
+			</Grid>
+		</Button>
+
+		<Button x:Name="FilmButton3" Grid.Column="5" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="LightBlue" Click="FilmButton_Click">
+			<Grid>
+				<Image Source="{Binding poster_path}" Width="150" Margin="0,5,0,40"/>
+				<TextBlock Text="{Binding title}" Margin="0,238,0,5" Height="30" TextAlignment="Center" FontSize="10" TextWrapping="Wrap" Width="150"/>
+			</Grid>
+		</Button>
+		
+		<!-- пагинация -->
+		<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,44,0,0" Grid.Row="4">
+			<Button x:Name="PreviousButton" Content="Previous" Click="PreviousPage_Click" Margin="5" Background="LightBlue"/>
+			<TextBlock Name="PageInfo" Text="Page 1" Margin="5"/>
+			<Button x:Name="NextPage" Content="Next" Click="NextPage_Click" Margin="5" Background="LightBlue"/>
+		</StackPanel>
+		
+		<TextBox x:Name="SearchTextBox" Grid.Column="2" HorizontalAlignment="Left" Margin="17,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="450" Grid.ColumnSpan="3"/>
+	
 	</Grid>
 </Window>

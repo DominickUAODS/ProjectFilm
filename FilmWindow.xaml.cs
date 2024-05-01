@@ -23,5 +23,23 @@ namespace ProjectFilm
 		{
 			InitializeComponent();
 		}
+
+		private void BackButton_Click(object sender, RoutedEventArgs e)
+		{
+			BaseWindow baseWindow = new BaseWindow();
+			baseWindow.Left = this.Left;
+			baseWindow.Top = this.Top;
+			this.Hide();
+			baseWindow.Show();
+		}
+
+		private void UserProfileButton_Click(object sender, RoutedEventArgs e)
+		{
+			UserWindow userWindow = new UserWindow();
+			userWindow.Left = this.Left;
+			userWindow.Top = this.Top;
+			this.Hide();
+			userWindow.Show();
+		}
 	}
 }

@@ -8,11 +8,12 @@
         Title="BaseWindow" Height="450" Width="800">
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
+			<ColumnDefinition Width="59*" />
+			<ColumnDefinition Width="101*"/>
+			<ColumnDefinition Width="160*" />
+			<ColumnDefinition Width="160*" />
+			<ColumnDefinition Width="160*" />
+			<ColumnDefinition Width="160*" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition />
@@ -21,10 +22,77 @@
 			<RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		<StackPanel Grid.Row="1" Margin="0,0,0,10" Grid.RowSpan="4"/>
-		<TextBox Grid.Column="2" HorizontalAlignment="Center" Margin="0,51,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="460"/>
-		<Button Grid.Column="4" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451"/>
-		<Button Grid.Column="4" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8"/>
-		<DataGrid Grid.Column="1" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="4" Margin="10,0,10,10" Grid.RowSpan="4"/>
+		<StackPanel x:Name="CategoryPanel" Margin="0,10,0,10" Grid.RowSpan="5" Grid.ColumnSpan="2"/>
+		<Button x:Name="SearchButton" Grid.Column="5" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" Click="SearchButton_Click"/>
+		<Button x:Name="UserProfileButton" Grid.Column="5" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8" Click="UserProfileButton_Click"/>
+
+		<!--<DataGrid Grid.Column="2" Name="FilmDataGrid0" AutoGenerateColumns="False" Margin="7,10,7,10" Grid.RowSpan="3" Grid.Row="1" MouseDoubleClick="FilmDataGrid_MouseDoubleClick">
+			<DataGridTemplateColumn Header="Film">
+				<DataGridTemplateColumn.CellTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal">
+							<Image Source="{Binding poster_path}" Width="100" Height="150" Margin="10"/>
+							<TextBlock Text="{Binding title}" VerticalAlignment="Center"/>
+						</StackPanel>
+					</DataTemplate>
+				</DataGridTemplateColumn.CellTemplate>
+			</DataGridTemplateColumn>
+		</DataGrid>-->
+
+		<Button x:Name="FilmDataGrid0" Grid.Column="2" Margin="7,10,0,10" Grid.RowSpan="3" Grid.Row="1">
+			<Grid>
+				<Image Source="{Binding poster_path}" Width="150" Height="190" Margin="0,0,0,20"/>
+				<TextBlock Text="{Binding title}" Margin="0,210,0,0" Height="30"/>
+			</Grid>
+		</Button>
+
+		<DataGrid Grid.Column="3" x:Name="FilmDataGrid1" AutoGenerateColumns="False" Margin="5,10,5,10" Grid.RowSpan="3" Grid.Row="1" MouseDoubleClick="FilmDataGrid_MouseDoubleClick">
+			<DataGridTemplateColumn Header="Film">
+				<DataGridTemplateColumn.CellTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal">
+							<Image Source="{Binding poster_path}" Width="100" Height="150" Margin="10"/>
+							<TextBlock Text="{Binding title}" VerticalAlignment="Center"/>
+						</StackPanel>
+					</DataTemplate>
+				</DataGridTemplateColumn.CellTemplate>
+			</DataGridTemplateColumn>
+		</DataGrid>
+
+		<DataGrid Grid.Column="4" x:Name="FilmDataGrid2" AutoGenerateColumns="False" Margin="5,10,5,10" Grid.RowSpan="3" Grid.Row="1" Width="150" MouseDoubleClick="FilmDataGrid_MouseDoubleClick">
+			<DataGridTemplateColumn Header="Film">
+				<DataGridTemplateColumn.CellTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal">
+							<Image Source="{Binding poster_path}" Width="100" Height="150" Margin="10"/>
+							<TextBlock Text="{Binding title}" VerticalAlignment="Center"/>
+						</StackPanel>
+					</DataTemplate>
+				</DataGridTemplateColumn.CellTemplate>
+			</DataGridTemplateColumn>
+		</DataGrid>
+
+		<DataGrid Grid.Column="5" x:Name="FilmDataGrid3" AutoGenerateColumns="False" Margin="5,10,5,10" Grid.RowSpan="3" Grid.Row="1" Width="150" MouseDoubleClick="FilmDataGrid_MouseDoubleClick">
+			<DataGridTemplateColumn Header="Film">
+				<DataGridTemplateColumn.CellTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal">
+							<Image Source="{Binding poster_path}" Width="100" Height="150" Margin="10"/>
+							<TextBlock Text="{Binding title}" VerticalAlignment="Center"/>
+						</StackPanel>
+					</DataTemplate>
+				</DataGridTemplateColumn.CellTemplate>
+			</DataGridTemplateColumn>
+		</DataGrid>
+
+		<!-- пагинация -->
+		<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,21" Grid.Row="4">
+			<Button x:Name="PreviousButton" Content="Previous" Click="PreviousPage_Click" Margin="5"/>
+			<TextBlock Name="PageInfo" Text="Page 1" Margin="5"/>
+			<Button x:Name="NextPage" Content="Next" Click="NextPage_Click" Margin="5"/>
+		</StackPanel>
+
+		<TextBox x:Name="SearchTextBox" Grid.Column="2" HorizontalAlignment="Left" Margin="17,52,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="450" Grid.ColumnSpan="3"/>
+
 	</Grid>
 </Window>

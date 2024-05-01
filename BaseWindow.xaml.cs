@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using static System.Reflection.Metadata.BlobBuilder;
 using ProjectFilm.Model;
 using ProjectFilm.Api;
-using Microsoft.IdentityModel.Tokens;
-
 
 namespace ProjectFilm
 {
@@ -26,6 +13,7 @@ namespace ProjectFilm
 	{
 		private int currentPage = 1;
 		private int pageSize = 5;
+		string pathImage = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
 
 		public BaseWindow()
 		{
@@ -37,10 +25,10 @@ namespace ProjectFilm
 		private async void CategoryButton_Click(object sender, RoutedEventArgs e)
 		{
 			Button clickedButton = sender as Button;
-			string selectedCategory = clickedButton.Content.ToString();
+			string selectedCategory = clickedButton.Tag.ToString();
 
 			currentPage = 1;
-			await LoadFilmsForCategory(selectedCategory);
+			LoadMoviesForCategory(selectedCategory);
 		}
 
 		private async void PreviousPage_Click(object sender, RoutedEventArgs e)
@@ -110,6 +98,7 @@ namespace ProjectFilm
 			try
 			{
 				Genres genres = await MovieApi.GetGenreList();
+
 				if(genres != null && genres.genres != null)
 				{
 					foreach(Genre genre in genres.genres)
@@ -143,34 +132,21 @@ namespace ProjectFilm
 
 				if(movies != null && movies.Results != null)
 				{
-					Movie movie = new Movie
+					Button[] dataButtons = [FilmButton0, FilmButton1, FilmButton2, FilmButton3];
+					int index = 0;
+					foreach(var butFilm in dataButtons)
 					{
-						title = "Film Title",
-						poster_path = "https://image.tmdb.org/t/p/w200/poster.jpg"
-					};
-					FilmDataGrid0.DataContext = movie;
+						Movie movie = new Movie
+						{
+							title = movies.Results[index].title + " / " + movies.Results[index].original_title,
+							poster_path = pathImage + movies.Results[index].poster_path,
+							id = movies.Results[index].id
+						};
 
-					//Image imageControl = FilmDataGrid0.Content as Image;
-					//TextBlock textBlock = FilmDataGrid0.Content as TextBlock;
+						butFilm.DataContext = movie;
 
-					//if(imageControl != null)
-					//{
-					//	imageControl.Source = new BitmapImage(new Uri(movies.Results[1].poster_path));
-					//}
-
-					//if(textBlock != null)
-					//{
-					//	textBlock.Text = movies.Results[1].title;// + "/" + movies.Results[1].original_title;
-					//}
-
-					//int index = 0;
-					//DataGrid[] dataGrids = { FilmDataGrid2, FilmDataGrid3 };
-					//foreach(var dataGrid in dataGrids)
-					//{
-					//	dataGrid.Items.Clear();
-					//	dataGrid.ItemsSource = movies.Results[index].original_title;
-					//	index++;
-					//}
+						index++;
+					}
 				}
 				else
 				{
@@ -191,33 +167,20 @@ namespace ProjectFilm
 
 				if(movies != null && movies.Results != null)
 				{
-
-
-					Movie movie = new Movie
+					Button[] dataButtons = [FilmButton0, FilmButton1, FilmButton2, FilmButton3];
+					int index = 0;
+					foreach(var butFilm in dataButtons)
 					{
-						title = "Film Title",
-						poster_path = "https://image.tmdb.org/t/p/w200/poster.jpg" // Пример URL изображения
-					};
+						Movie movie = new Movie
+						{
+							title = movies.Results[index].title + " / " + movies.Results[index].original_title,
+							poster_path = pathImage + movies.Results[index].poster_path,
+							id = movies.Results[index].id
+						};
 
-					// Установите значения `Image` и `TextBlock` вручную
-					Image imageControl = FilmDataGrid0.Content as Image;
-					TextBlock textBlock = FilmDataGrid0.Content as TextBlock;
+						butFilm.DataContext = movie;
 
-					if(imageControl != null)
-					{
-						imageControl.Source = new BitmapImage(new Uri(movie.poster_path));
-					}
-
-					if(textBlock != null)
-					{
-						textBlock.Text = movie.title;
-					}
-
-					DataGrid[] dataGrids = { FilmDataGrid2, FilmDataGrid3 };
-					foreach(var dataGrid in dataGrids)
-					{
-						dataGrid.Items.Clear();
-						dataGrid.ItemsSource = movies.Results;
+						index++;
 					}
 				}
 				else
@@ -239,12 +202,12 @@ namespace ProjectFilm
 
 				if(movies != null && movies.Results != null)
 				{
-					DataGrid[] dataGrids = { FilmDataGrid2, FilmDataGrid3 };
-					foreach(var dataGrid in dataGrids)
-					{
-						dataGrid.Items.Clear();
-						dataGrid.ItemsSource = movies.Results;
-					}
+					//DataGrid[] dataGrids = { FilmDataGrid2, FilmDataGrid3 };
+					//foreach(var dataGrid in dataGrids)
+					//{
+					//	dataGrid.Items.Clear();
+					//	dataGrid.ItemsSource = movies.Results;
+					//}
 				}
 				else
 				{

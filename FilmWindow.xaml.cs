@@ -60,7 +60,7 @@ namespace ProjectFilm
 					}
 					FilmInfoLabel.Content = $"{releaseDate:dd/MM/yyyy} {genreStr}";
 
-					OverviewLabel.Content = "overwirllll**";
+					OverviewLabel.Content = $"{movie.overview}";
 
 				}
 				else

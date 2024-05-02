@@ -33,18 +33,26 @@ namespace ProjectFilm
 			baseWindow.Show();
 		}
 
-		private void SearchButton_Click(object sender, RoutedEventArgs e)
-		{
 
-		}
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
-		private void UserProfileButton_Click(object sender, RoutedEventArgs e)
+        }
+
+        private void EditLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+			MakeVisibleToEdit();
+            EnterOldLabel.Content = "Enter old Login";
+			EnterNewLabel.Content = "Enter new Login";
+        }
+
+		public void MakeVisibleToEdit()
 		{
-			UserWindow userWindow = new UserWindow();
-			userWindow.Left = this.Left;
-			userWindow.Top = this.Top;
-			this.Hide();
-			userWindow.Show();
-		}
-	}
+            EnterOldLabel.Visibility = Visibility.Visible;
+            EnterOldTxtBox.Visibility = Visibility.Visible;
+			EnterNewLabel.Visibility = Visibility.Visible;
+			EnterNewTextBox.Visibility = Visibility.Visible;	
+
+        }
+    }
 }

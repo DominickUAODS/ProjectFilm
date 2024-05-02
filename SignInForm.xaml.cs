@@ -44,7 +44,7 @@ namespace ProjectFilm
             UserViewModel uv = new UserViewModel
             {
                 Email = txtBoxForEmail.Text,
-                Password = txtBoxForPaasword.Password
+                Password = txtBoxForPaasword.Text
 
             };
 
@@ -59,8 +59,9 @@ namespace ProjectFilm
             }
             else
             {
-                MessageBox.Show("Ok");
-                //переход на форму
+                BaseWindow registration = new BaseWindow();
+                registration.Show();
+                Hide();
             }
 
 
@@ -74,5 +75,21 @@ namespace ProjectFilm
             label.Height = 40;
         }
 
+        public void buttonSee_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (psBoxForPaasword.Visibility == Visibility.Visible)
+            {
+                psBoxForPaasword.Visibility = Visibility.Collapsed;
+                txtBoxForPaasword.Visibility = Visibility.Visible;
+                txtBoxForPaasword.Text = psBoxForPaasword.Password;
+            }
+            else
+            {
+                psBoxForPaasword.Visibility = Visibility.Visible;
+                txtBoxForPaasword.Visibility = Visibility.Collapsed;
+                psBoxForPaasword.Password = txtBoxForPaasword.Text;
+            }
+        }
     }
 }

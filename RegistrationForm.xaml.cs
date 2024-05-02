@@ -67,7 +67,9 @@ namespace ProjectFilm
                     else
                     {
                         await userRepository.RegisterAsync(uv);
-                        MessageBox.Show("Welcome!"); //переход на другую форму
+                        BaseWindow registration = new BaseWindow();
+                        registration.Show();
+                        Hide();
                     }
                 }
             }

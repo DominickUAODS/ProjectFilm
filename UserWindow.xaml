@@ -5,27 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjectFilm"
         mc:Ignorable="d"
-        Title="UserWindow" Height="450" Width="800">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-		<StackPanel Margin="0,0,0,10" Grid.RowSpan="4" Grid.Row="1"/>
-		<Button x:Name="SearchButton" Grid.Column="4" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" Click="SearchButton_Click"/>
-		<Button x:Name="UserProfileButton" Grid.Column="4" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8" Click="UserProfileButton_Click"/>
-		<Button Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="BackButton_Click"/>
-		<TextBox x:Name="SearchTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="17,52,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="450" Grid.ColumnSpan="3"/>
+        Title="UserWindow" Height="450" Width="600">
+    <Grid>
+        <Button x:Name="UserProfileButton"  BorderBrush="{x:Null}"  HorizontalAlignment="Right" Margin="0,9,10,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8" Click="UserProfileButton_Click" Background="White" Width="35">
+            <Button.Content>
+                <Image Source="Image\user_profile_icon_208590.png" Stretch="Fill" OpacityMask="Black" RenderTransformOrigin="1.216,0.49" Height="30"  />
+            </Button.Content>
+        </Button>
+        <Button x:Name ="BackButton"  BorderBrush="{x:Null}"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="BackButton_Click" Background="White">
+            <Button.Content>
+                <Image Source="Image\BackArrow.png" Stretch="Fill" Height="29" Width="32" OpacityMask="Black" />
+            </Button.Content>
+        </Button>
 
-	</Grid>
+    </Grid>
 </Window>

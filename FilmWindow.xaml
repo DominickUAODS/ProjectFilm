@@ -7,58 +7,73 @@
         mc:Ignorable="d"
         Title="FilmWindow" Height="450" Width="800">
 
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition />
-			<RowDefinition />
-			<RowDefinition />
-			<RowDefinition />
-			<RowDefinition />
-		</Grid.RowDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-		<Button x:Name="UserProfileButton" Grid.Column="4" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8" Click="UserProfileButton_Click"/>
+        <Button x:Name="UserProfileButton" Grid.Column="4" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" FontSize="8" Click="UserProfileButton_Click"
+        BorderBrush="{x:Null}" Background="{x:Null}" Height="33" Width="45">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Image\user_profile_icon_208590.png" Stretch="Uniform" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
 
-		<Button x:Name="FilmButton" Margin="25,10,130,45" Grid.RowSpan="3" Background="LightBlue" Grid.ColumnSpan="2">
-			<Grid>
-				<Image Source="{Binding poster_path}" Width="auto" Height="auto"/>
-			</Grid>
-		</Button>
 
-		<Button x:Name="BackButton" Content="Back" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Click="BackButton_Click" Grid.Column="4"/>
+        <Button x:Name="FilmButton" Margin="25,10,130,45" Grid.RowSpan="3" Background="LightBlue" Grid.ColumnSpan="2">
+            <Grid>
+                <Image Source="{Binding poster_path}" Width="auto" Height="auto"/>
+            </Grid>
+        </Button>
 
-		<TabControl Grid.Row="2" Margin="24,43,33,10" Grid.ColumnSpan="5" Grid.RowSpan="3">
-			<TabItem Header="Рецензия">
-				<Grid Background="#FFE5E5E5">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
-				</Grid>
-			</TabItem>
-			<TabItem Header="Обсуждения">
-				<Grid Background="#FFE5E5E5">
-					<Grid.ColumnDefinitions>
-					</Grid.ColumnDefinitions>
-				</Grid>
-			</TabItem>
-		</TabControl>
+        <Button x:Name="BackButton" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Click="BackButton_Click" Grid.Column="4" Height="33" Width="40" BorderBrush="{x:Null}" Background="{x:Null}">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Image\BackArrow.png" Stretch="Uniform" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
 
-		<Label x:Name="OriginalTitleLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="46,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="3" Width="409" FontFamily="Arial Black" FontWeight="Bold" FontSize="16" Foreground="White"/>
-		<Label x:Name="ReleaseYearLabel" Grid.Column="3" Content="" HorizontalAlignment="Left" Margin="140,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Foreground="White"/>
-		<Label x:Name="FilmInfoLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="46,69,0,0" VerticalAlignment="Top" Grid.RowSpan="2" Grid.ColumnSpan="3" Width="424" FontFamily="Segoe UI Black" FontSize="14" Foreground="White"/>
-		<Label Grid.Column="1" Content="Overview" HorizontalAlignment="Left" Margin="46,10,0,0" Grid.Row="1" VerticalAlignment="Center" FontWeight="Bold" Foreground="White"/>
-		<Label x:Name="OverviewLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="46,69,0,0" Grid.Row="1" VerticalAlignment="Top" FontStyle="Italic" Grid.RowSpan="2" Grid.ColumnSpan="4" Width="514" Height="33" Foreground="White"/>
 
-	</Grid>
+        <TabControl Grid.Row="2" Margin="24,43,33,10" Grid.ColumnSpan="5" Grid.RowSpan="3">
+            <TabItem Header="Reviews">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Discussions">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+        </TabControl>
 
-	<Window.Background>
-		<ImageBrush x:Name="BackDropImage" ImageSource="{Binding backdrop_path}"/>
-	</Window.Background>
+        <Label x:Name="OriginalTitleLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="46,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="3" Width="424" FontFamily="Arial Black" FontWeight="Bold" FontSize="16" Foreground="#FFEAE5E5"/>
+        <Label x:Name="ReleaseYearLabel" Grid.Column="4" Content="" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Foreground="#FFEAE5E5" Width="40"/>
+        <Label x:Name="FilmInfoLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="46,69,0,0" VerticalAlignment="Top" Grid.RowSpan="2" Grid.ColumnSpan="3" Width="424" FontFamily="Segoe UI Black" FontSize="14" Foreground="#FFEAE5E5"/>
+        <Label Grid.Column="1" Content="Overview" HorizontalAlignment="Left" Margin="46,10,0,0" Grid.Row="1" VerticalAlignment="Center" FontWeight="Bold" Foreground="White"/>
+        <Label x:Name="OverviewLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="46,69,0,0" Grid.Row="1" VerticalAlignment="Top" FontStyle="Italic" Grid.RowSpan="2" Grid.ColumnSpan="4" Width="514" Height="33" Foreground="#FFEAE5E5"/>
+
+    </Grid>
+
+    <Window.Background>
+        <ImageBrush x:Name="BackDropImage" ImageSource="{Binding backdrop_path}"/>
+    </Window.Background>
 
 </Window>

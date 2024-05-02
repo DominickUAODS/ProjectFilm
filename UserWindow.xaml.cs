@@ -1,5 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.ApplicationServices;
+using ProjectFilm.Data;
+using ProjectFilm.Helpers;
+using ProjectFilm.Model;
+using ProjectFilm.Repository;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +26,29 @@ namespace ProjectFilm
 	/// </summary>
 	public partial class UserWindow : Window
 	{
-		public UserWindow()
+        public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
+        ValidationHelper helper = new ValidationHelper(context);
+        UserRepository userRepository = new UserRepository(context);
+		ProjectFilm.Model.User user = new ProjectFilm.Model.User();
+        public UserWindow()
 		{
 			InitializeComponent();
+			GetValidUser();
+			ShowInformation().GetAwaiter();
+		}
+
+		public void GetValidUser()
+		{
+			ProjectFilm.Model.User LogInUser = SignInForm.GetUser();
+			ProjectFilm.Model.User SignInUser = RegistrationForm.GetUser();
+			if(LogInUser == null)
+			{
+				user = SignInUser;
+			}
+			else
+			{
+				user = LogInUser;
+			}
 		}
 
 		private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -31,20 +58,50 @@ namespace ProjectFilm
 			baseWindow.Top = this.Top;
 			this.Hide();
 			baseWindow.Show();
-		}
-
-		private void SearchButton_Click(object sender, RoutedEventArgs e)
+        }
+		public async Task ShowInformation()
 		{
+			Guid? userPhotoId = await userRepository.GetUserPhotoIdAsync(user.Id);
+			if (userPhotoId != null)
+			{
+				// Получаем фотографию по айди
+				var userPhoto = await context.ImagesForBase.FirstOrDefaultAsync(up => up.Id == userPhotoId);
+				if (userPhoto != null && userPhoto.Data != null)
+				{
+					BitmapImage userImage = new BitmapImage();
+					using (MemoryStream memoryStream = new MemoryStream(userPhoto.Data))
+					{
+						userImage.BeginInit();
+						userImage.StreamSource = memoryStream;
+						userImage.CacheOption = BitmapCacheOption.OnLoad;
+						userImage.EndInit();
+					}
+					ProfileImg.Source = userImage;
+				}
 
+			}
 		}
+		private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
-		private void UserProfileButton_Click(object sender, RoutedEventArgs e)
+        }
+
+        private void EditLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+			MakeVisibleToEdit();
+            EnterOldLabel.Content = "Enter old Login";
+			EnterNewLabel.Content = "Enter new Login";
+
+
+        }
+
+		public void MakeVisibleToEdit()
 		{
-			UserWindow userWindow = new UserWindow();
-			userWindow.Left = this.Left;
-			userWindow.Top = this.Top;
-			this.Hide();
-			userWindow.Show();
-		}
-	}
+            EnterOldLabel.Visibility = Visibility.Visible;
+            EnterOldTxtBox.Visibility = Visibility.Visible;
+			EnterNewLabel.Visibility = Visibility.Visible;
+			EnterNewTextBox.Visibility = Visibility.Visible;	
+
+        }
+    }
 }

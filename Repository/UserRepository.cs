@@ -21,18 +21,60 @@ namespace ProjectFilm.Repository
             _context = context;
         }
 
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
+        public async Task<ImageForBase> GetRandomImageAsync()
+        {
+            var images = await _context.ImagesForBase.ToListAsync();
+            if (images.Count > 0)
+            {
+                Random random = new Random();
+                int index = random.Next(0, images.Count);
+                return images[index];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<Guid?> GetUserPhotoIdAsync(Guid userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            return user.ImageId;
+
+        }
+
         public async Task<bool> RegisterAsync(RegisterViewModel user)
         {
             var salt = SecurityHelper.GenerateSalt(70);
             string hashedPassword = SecurityHelper.HashPassword(user.Password, salt, 10101, 70);
-            _context.Users.Add(new User
+
+            User newUser = new User
             {
                 Email = user.Email,
                 Salt = salt,
                 HashedPassword = hashedPassword,
                 UserName = user.UserName
-            });
-            return Convert.ToBoolean(await _context.SaveChangesAsync());
+            };
+            var allImages = await _context.ImagesForBase.ToListAsync();
+            if (allImages == null || allImages.Count == 0)
+            {
+                return false; 
+            }
+            Random random = new Random();
+            int randomIndex = random.Next(0, allImages.Count);
+            var randomImage = allImages[randomIndex];
+            newUser.ImageForBase = randomImage;
+            newUser.ImageId = randomImage.Id;
+            _context.Users.Add(newUser);
+            int result = await _context.SaveChangesAsync();
+
+            return result > 0; 
         }
 
         public async Task<bool> SignInAsync(UserViewModel user)

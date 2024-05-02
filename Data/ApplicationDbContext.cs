@@ -12,8 +12,8 @@ namespace ProjectFilm.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<ChatMessage> Messages { get; set; }
-        public DbSet <Review> Reviews { get; set; } 
-
+        public DbSet <Review> Reviews { get; set; }
+        public DbSet<ImageForBase> ImagesForBase { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().Property(e => e.RegisterDate).HasDefaultValueSql("GETDATE()");
@@ -24,6 +24,7 @@ namespace ProjectFilm.Data
             modelBuilder.Entity<User>()
                 .HasMany(r => r.Reviews)
                 .WithOne(u=>u.user);
+            modelBuilder.Entity<User>().HasOne(i=>i.ImageForBase).WithMany(u=>u.user);
         }
     }
 }

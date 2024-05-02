@@ -18,6 +18,8 @@ using System.Diagnostics.Eventing.Reader;
 using ProjectFilm.Data;
 using ProjectFilm.Repository;
 using System.Windows.Navigation;
+using ProjectFilm.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectFilm
 {
@@ -29,6 +31,7 @@ namespace ProjectFilm
         public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
         ValidationHelper helper = new ValidationHelper(context);
         UserRepository userRepository = new UserRepository(context);
+        public static ProjectFilm.Model.User user = new ProjectFilm.Model.User();
 
         public RegistrationForm()
         {
@@ -36,6 +39,10 @@ namespace ProjectFilm
             DbInit.EnsurePopulate().GetAwaiter();
         }
 
+        public static ProjectFilm.Model.User GetUser()
+        {
+            return user;
+        } 
         public async void SignInButton_Click(object sender, RoutedEventArgs e)
         {
             if (helper.IsEnglishLettersAndNumbers(txtBoxForLoginl.Text))
@@ -67,9 +74,18 @@ namespace ProjectFilm
                     else
                     {
                         await userRepository.RegisterAsync(uv);
-                        BaseWindow registration = new BaseWindow();
-                        registration.Show();
-                        Hide();
+                        user = await userRepository.GetUserByEmailAsync(uv.Email);
+
+                        if (user != null)
+                        {
+                            BaseWindow registration = new BaseWindow();
+                            registration.Show();
+                            Hide();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to retrieve user information.");
+                        }
                     }
                 }
             }
@@ -79,6 +95,7 @@ namespace ProjectFilm
                 ResetLabel(labelEnterLogin);
             }
         }
+
 
         private void ResetLabel(TextBlock label)
         {

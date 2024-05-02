@@ -1,5 +1,6 @@
 ﻿using ProjectFilm.Data;
 using ProjectFilm.Helpers;
+using ProjectFilm.Model;
 using ProjectFilm.Repository;
 using ProjectFilm.ViewModels;
 using System;
@@ -25,12 +26,17 @@ namespace ProjectFilm
     {
         public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
         UserRepository userRepository = new UserRepository(context);
+        public static User user = new User();
 
         public SignInForm()
         {
             InitializeComponent();
         }
 
+        public static ProjectFilm.Model.User GetUser()
+        {
+                return user;
+        }
         public void GoToSignInButton_Click(object sender, RoutedEventArgs e)
         {
             RegistrationForm registration= new RegistrationForm();
@@ -59,9 +65,18 @@ namespace ProjectFilm
             }
             else
             {
-                BaseWindow registration = new BaseWindow();
-                registration.Show();
-                Hide();
+                user = await userRepository.GetUserByEmailAsync(uv.Email);
+
+                if (user != null)
+                {
+                    BaseWindow registration = new BaseWindow();
+                    registration.Show();
+                    Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Failed to retrieve user information.");
+                }
             }
 
 

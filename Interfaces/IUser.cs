@@ -13,5 +13,7 @@ namespace ProjectFilm.Interfaces
         Task<bool> SignInAsync(UserViewModel user);
         Task<bool> RegisterAsync(RegisterViewModel user);
         Task<ImageForBase> GetRandomImageAsync();
+        Task<User> GetUserByEmailAsync(string email);
+        //Task<byte[]> GetUserImageAsync(Guid userId);
     }
 }

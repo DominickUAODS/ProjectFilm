@@ -39,7 +39,7 @@ namespace ProjectFilm.Data
 
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-            }
+        }
 
             if (!await context.Users.AnyAsync())
             {

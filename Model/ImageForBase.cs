@@ -10,5 +10,6 @@ namespace ProjectFilm.Model
     {
         public Guid Id { get; set; }
         public byte[] Data { get; set; }
+        public List<User>? user { get; set;}
     }
 }

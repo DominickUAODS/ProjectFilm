@@ -35,5 +35,6 @@
                 <Image Source="Image\basic-eye-closed_98240.png" Stretch="Fill" Height="21" Width="34" />
             </Button.Content>
         </Button>
+        <Button x:Name="ButtonForget" Content="Forget Password?" HorizontalAlignment="Left" Margin="285,0,0,0" Grid.Row="6" VerticalAlignment="Center" BorderBrush="{x:Null}" FontFamily="Cascadia Mono SemiBold" FontSize="14" Foreground="#FF8EB9ED" Background="White"  HorizontalContentAlignment="Left"  FontStyle="Italic" Click="ButtonForget_Click"/>
     </Grid>
 </Window>

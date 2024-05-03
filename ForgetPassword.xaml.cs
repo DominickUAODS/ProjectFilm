@@ -1,8 +1,20 @@
 ﻿using ProjectFilm.Data;
 using ProjectFilm.Helpers;
 using ProjectFilm.Repository;
-using ProjectFilm.Model;
+using ProjectFilm.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace ProjectFilm
 {
@@ -11,17 +23,17 @@ namespace ProjectFilm
     /// </summary>
     public partial class ForgetPassword : Window
     {
-        User user;
+        ProjectFilm.Model.User user;
         public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
         ValidationHelper helper = new ValidationHelper(context);
         UserRepository userRepository = new UserRepository(context);
         public static string recoveryCode = SecurityHelper.GenerateRandomCode(4);
-
         public ForgetPassword()
         {
             InitializeComponent();
         }
-              
+
+      
         private async void ButtonSubmitCode_Click(object sender, RoutedEventArgs e)
         {
             if(!string.IsNullOrWhiteSpace(EnterCodeBox.Text))
@@ -48,12 +60,26 @@ namespace ProjectFilm
             }
         }
 
+        public void IsUserExist()
+        {
+            ProjectFilm.Model.User? u = context.Users.FirstOrDefault(u => u.Email == EnterGmailBox.Text && u.UserName == EnterLoginBox.Text);
+            if (u!=null)
+            {
+                user = u;
+            }
+            else
+            {
+                EnterGmailLabel.Content = "Not valid email. Reenter.";
+                EnterLoginLabel.Content = "Not valid login. Reenter.";
+            }
+        }
+
         private void ButtonSendCode_Click(object sender, RoutedEventArgs e)
         {
-          User? u = context.Users.FirstOrDefault(u => u.Email == EnterGmailBox.Text && u.UserName == EnterLoginBox.Text);
-            if (u != null) 
+            IsUserExist();
+            if (user != null) 
             { 
-                SecurityHelper.SendRecoveryCode(u.Email, recoveryCode);
+                SecurityHelper.SendRecoveryCode(user.Email, recoveryCode);
                 EnterCodeLabel.Visibility = Visibility.Visible;
                 EnterCodeBox.Visibility = Visibility.Visible;
                 SubmitButton.Visibility = Visibility.Visible;
@@ -62,6 +88,8 @@ namespace ProjectFilm
             {
                 EnterGmailLabel.Content = "Not valid email. Reenter.";
             }
+
+         
         }
     }
 }

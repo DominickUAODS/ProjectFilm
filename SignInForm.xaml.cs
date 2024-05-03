@@ -106,5 +106,12 @@ namespace ProjectFilm
                 psBoxForPaasword.Password = txtBoxForPaasword.Text;
             }
         }
+
+        private void ButtonForget_Click(object sender, RoutedEventArgs e)
+        {
+            ForgetPassword fp = new ForgetPassword();
+            fp.Show();
+            Hide();
+        }
     }
 }

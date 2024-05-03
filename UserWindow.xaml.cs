@@ -29,7 +29,7 @@ namespace ProjectFilm
         public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
         ValidationHelper helper = new ValidationHelper(context);
         UserRepository userRepository = new UserRepository(context);
-		ProjectFilm.Model.User user = new ProjectFilm.Model.User();
+		Model.User user = new Model.User();
         public UserWindow()
 		{
 			InitializeComponent();
@@ -39,8 +39,8 @@ namespace ProjectFilm
 
 		public void GetValidUser()
 		{
-			ProjectFilm.Model.User LogInUser = SignInForm.GetUser();
-			ProjectFilm.Model.User SignInUser = RegistrationForm.GetUser();
+			Model.User LogInUser = SignInForm.GetUser();
+			Model.User SignInUser = RegistrationForm.GetUser();
 			if(LogInUser == null)
 			{
 				user = SignInUser;

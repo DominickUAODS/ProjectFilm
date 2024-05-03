@@ -24,7 +24,7 @@ namespace ProjectFilm
 
 		public BaseWindow()
 		{
-			DbInit.EnsurePopulate().GetAwaiter();
+			//DbInit.EnsurePopulate().GetAwaiter();
 			InitializeComponent();
 			PreLoadGenre();
 			LoadTopMovies();

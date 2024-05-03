@@ -10,6 +10,8 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 
+
+
 namespace ProjectFilm
 {
 	/// <summary>
@@ -26,8 +28,8 @@ namespace ProjectFilm
 		/// chat data 
 		private UdpClient udpClient;
 		private IPEndPoint remoteEndPoint;
-		private string serverIp = "YourServerIP"; // Укажите IP-адрес сервера
-		private int serverPort = 12345; // Укажите порт сервера
+		private string serverIp = "YourServerIP";
+		private int serverPort = 12345;
 
 		public FilmWindow(int id)
 		{
@@ -194,14 +196,20 @@ namespace ProjectFilm
 			{
 				try
 				{
-					IPEndPoint remoteEp = null;
-					UdpReceiveResult result = await udpClient.ReceiveAsync();
-					string receivedMessage = Encoding.UTF8.GetString(result.Buffer);
-
-					Dispatcher.Invoke(() =>
+					using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
 					{
-						LiveChatListBox.Items.Add(receivedMessage);
-					});
+						var chatMessages = await context.Messages.ToListAsync();
+
+						Dispatcher.Invoke(() =>
+						{
+							LiveChatListBox.Items.Clear();
+							foreach(var chatMessage in chatMessages)
+							{
+								string displayedMessage = $"{chatMessage.UserId}: {chatMessage.Text}";
+								LiveChatListBox.Items.Add(displayedMessage);
+							}
+						});
+					}
 				}
 				catch(Exception ex)
 				{
@@ -210,31 +218,65 @@ namespace ProjectFilm
 			}
 		}
 
-		private void SendButton_Click(object sender, RoutedEventArgs e)
+		private async void SendButton_Click(object sender, RoutedEventArgs e)
 		{
 			if(!string.IsNullOrEmpty(MessageTextBox.Text))
 			{
-				string message = $"{UserId}: {MessageTextBox.Text}";
-				byte[] data = Encoding.UTF8.GetBytes(message);
+				ChatMessage newChatMessage = new ChatMessage
+				{
+					Id = Guid.NewGuid(),
+					Text = MessageTextBox.Text,
+					Date = DateTime.Now,
+					UserId = UserId
+				};
 
-				udpClient.Send(data, data.Length, remoteEndPoint);
+				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+				{
+					context.Messages.Add(newChatMessage);
+					await context.SaveChangesAsync();
+				}
 
-				LiveChatListBox.Items.Add(message);
+				string newMessage = $"{newChatMessage.UserId}: {newChatMessage.Text}";
+
+				LiveChatListBox.Items.Add(newMessage);
 
 				MessageTextBox.Clear();
 			}
 		}
 
-		private void DeleteButton_Click(object sender, RoutedEventArgs e)
+		private async void DeleteButton_Click(object sender, RoutedEventArgs e)
 		{
 			if(LiveChatListBox.SelectedIndex >= 0)
 			{
-				LiveChatListBox.Items.RemoveAt(LiveChatListBox.SelectedIndex);
+				string selectedMessage = LiveChatListBox.SelectedItem.ToString();
+				string[] parts = selectedMessage.Split(':');
 
-				
-				string deleteCommand = $"DELETE {LiveChatListBox.SelectedIndex}";
-				byte[] deleteData = Encoding.UTF8.GetBytes(deleteCommand);
-				udpClient.Send(deleteData, deleteData.Length, remoteEndPoint);
+				if(parts.Length >= 2)
+				{
+					string selectedUserId = parts[0].Trim();
+					string selectedText = parts[1].Trim();
+
+					if(selectedUserId == UserId.ToString())
+					{
+						using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+						{
+							var chatMessage = await context.Messages
+								.FirstOrDefaultAsync(msg => msg.UserId.ToString() == selectedUserId && msg.Text == selectedText);
+
+							if(chatMessage != null)
+							{
+								context.Messages.Remove(chatMessage);
+								await context.SaveChangesAsync();
+							}
+						}
+
+						LiveChatListBox.Items.RemoveAt(LiveChatListBox.SelectedIndex);
+					}
+					else
+					{
+						MessageBox.Show("You can only delete your own messages.");
+					}
+				}
 			}
 		}
 	}

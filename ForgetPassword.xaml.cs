@@ -1,20 +1,8 @@
 ﻿using ProjectFilm.Data;
 using ProjectFilm.Helpers;
 using ProjectFilm.Repository;
-using ProjectFilm.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProjectFilm.Model;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProjectFilm
 {
@@ -23,17 +11,17 @@ namespace ProjectFilm
     /// </summary>
     public partial class ForgetPassword : Window
     {
-        ProjectFilm.Model.User user;
+        User user;
         public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
         ValidationHelper helper = new ValidationHelper(context);
         UserRepository userRepository = new UserRepository(context);
         public static string recoveryCode = SecurityHelper.GenerateRandomCode(4);
+
         public ForgetPassword()
         {
             InitializeComponent();
         }
-
-      
+              
         private async void ButtonSubmitCode_Click(object sender, RoutedEventArgs e)
         {
             if(!string.IsNullOrWhiteSpace(EnterCodeBox.Text))
@@ -62,7 +50,7 @@ namespace ProjectFilm
 
         private void ButtonSendCode_Click(object sender, RoutedEventArgs e)
         {
-          ProjectFilm.Model.User? u = context.Users.FirstOrDefault(u => u.Email == EnterGmailBox.Text && u.UserName == EnterLoginBox.Text);
+          User? u = context.Users.FirstOrDefault(u => u.Email == EnterGmailBox.Text && u.UserName == EnterLoginBox.Text);
             if (u != null) 
             { 
                 SecurityHelper.SendRecoveryCode(u.Email, recoveryCode);
@@ -74,8 +62,6 @@ namespace ProjectFilm
             {
                 EnterGmailLabel.Content = "Not valid email. Reenter.";
             }
-
-         
         }
     }
 }

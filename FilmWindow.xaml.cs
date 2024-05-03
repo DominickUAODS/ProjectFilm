@@ -4,6 +4,8 @@ using ProjectFilm.Model;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using ProjectFilm.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectFilm
 {
@@ -14,21 +16,33 @@ namespace ProjectFilm
 	{
 		private int filmId;
 		private string pathImage = GetImagePath();
+		private Movie movie;
+		private Guid UserId;
+		//public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
 
 		public FilmWindow(int id)
 		{
-			filmId = id;
-			LoadFilmDetailsAsync();
 			InitializeComponent();
+			filmId = id;
+			InitializeAsync();
+			//LoadFilmDetailsAsync();
+			//LoadReviews();
+
 		}
 
-		private async void LoadFilmDetailsAsync()
+		private async void InitializeAsync()
+		{
+			await LoadFilmDetailsAsync();
+			await LoadReviews();
+		}
+
+		private async Task LoadFilmDetailsAsync()
 		{
 			try
 			{
-				Movie movie = await MovieApi.GetMovieById(filmId);
+				movie = await MovieApi.GetMovieById(filmId);
 
-				if (movie != null)
+				if(movie != null)
 				{
 					FilmButton.DataContext = null;
 					Movie currentMovie = new Movie
@@ -50,7 +64,7 @@ namespace ProjectFilm
 					ReleaseYearLabel.Content = $"{(releaseDate.Year.ToString())}";
 
 					string genreStr = string.Empty;
-					if (movie.genres != null)
+					if(movie.genres != null)
 					{
 						foreach(var genre in movie.genres)
 						{
@@ -60,7 +74,7 @@ namespace ProjectFilm
 					}
 					FilmInfoLabel.Content = $"{releaseDate:dd/MM/yyyy} {genreStr}";
 
-					OverviewLabel.Content = $"{movie.overview}";
+					OverviewLabel.Text = $"{movie.overview}";
 
 				}
 				else
@@ -109,6 +123,53 @@ namespace ProjectFilm
 			// получаем строку подключения 
 			var connectionString = config.GetSection("ImagePaths:PosterPath");
 			return connectionString.Value;
+		}
+
+		private async void ReviewAddButton_Click(object sender, RoutedEventArgs e)
+		{
+			if(!string.IsNullOrEmpty(ReviewsTextBox.Text))
+			{
+				Review newReview = new Review
+				{
+					Id = Guid.NewGuid(),
+					MovieName = movie.original_title,
+					DateOfPost = DateTime.Now,
+					TextOfReview = ReviewsTextBox.Text,
+					//UserId = UserId
+					UserId = Guid.NewGuid()
+				};
+
+				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+				{
+					context.Reviews.Add(newReview);
+					await context.SaveChangesAsync();
+				}
+
+				ReviewsTextBox.Clear();
+				await LoadReviews();
+			}
+			else
+			{
+				MessageBox.Show($"Review is empty. Please add your review.");
+			}
+		}
+
+		private async Task LoadReviews()
+		{
+			ReviewsListBox.Items.Clear();
+			using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+			{
+				var reviews = await context.Reviews.Where(r=>r.MovieName == movie.original_title).ToListAsync();
+
+				if(reviews.Count != 0)
+				{
+					ReviewsListBox.ItemsSource = reviews;
+				}
+				else
+				{
+					ReviewsListBox.Items.Add($"No reviews for current film");
+				}
+			}
 		}
 	}
 }

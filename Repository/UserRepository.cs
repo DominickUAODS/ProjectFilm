@@ -2,11 +2,6 @@
 using ProjectFilm.Helpers;
 using ProjectFilm.Interfaces;
 using ProjectFilm.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjectFilm.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,12 +41,12 @@ namespace ProjectFilm.Repository
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             return user.ImageId;
-
         }
 
         public async Task<bool> RegisterAsync(RegisterViewModel user)
         {
             var salt = SecurityHelper.GenerateSalt(70);
+
             string hashedPassword = SecurityHelper.HashPassword(user.Password, salt, 10101, 70);
 
             User newUser = new User
@@ -61,11 +56,13 @@ namespace ProjectFilm.Repository
                 HashedPassword = hashedPassword,
                 UserName = user.UserName
             };
+
             var allImages = await _context.ImagesForBase.ToListAsync();
             if (allImages == null || allImages.Count == 0)
             {
                 return false; 
             }
+
             Random random = new Random();
             int randomIndex = random.Next(0, allImages.Count);
             var randomImage = allImages[randomIndex];
@@ -84,11 +81,13 @@ namespace ProjectFilm.Repository
                 Salt = e.Salt,
                 HashPassword = e.HashedPassword
             }).FirstOrDefaultAsync();
+
             if (salt?.Salt != null && salt?.HashPassword != null)
             {
                 string hashedPassword = SecurityHelper.HashPassword(user.Password, salt.Salt, 10101, 70);
                 return salt.HashPassword.Equals(hashedPassword);
             }
+
             return false;
         }
     }

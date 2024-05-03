@@ -8,9 +8,6 @@ using ProjectFilm.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Sockets;
 using System.Net;
-using System.Text;
-
-
 
 namespace ProjectFilm
 {

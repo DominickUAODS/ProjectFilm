@@ -6,6 +6,9 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using ProjectFilm.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Sockets;
+using System.Net;
+using System.Text;
 
 namespace ProjectFilm
 {
@@ -20,6 +23,12 @@ namespace ProjectFilm
 		private Guid UserId;
 		//public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
 
+		/// chat data 
+		private UdpClient udpClient;
+		private IPEndPoint remoteEndPoint;
+		private string serverIp = "YourServerIP"; // Укажите IP-адрес сервера
+		private int serverPort = 12345; // Укажите порт сервера
+
 		public FilmWindow(int id)
 		{
 			InitializeComponent();
@@ -27,7 +36,7 @@ namespace ProjectFilm
 			InitializeAsync();
 			//LoadFilmDetailsAsync();
 			//LoadReviews();
-
+			InitializeChat();
 		}
 
 		private async void InitializeAsync()
@@ -172,17 +181,61 @@ namespace ProjectFilm
 			}
 		}
 
+		private void InitializeChat()
+		{
+			udpClient = new UdpClient();
+			remoteEndPoint = new IPEndPoint(IPAddress.Parse(serverIp), serverPort);
+			StartListening();
+		}
+
+		private async void StartListening()
+		{
+			while(true)
+			{
+				try
+				{
+					IPEndPoint remoteEp = null;
+					UdpReceiveResult result = await udpClient.ReceiveAsync();
+					string receivedMessage = Encoding.UTF8.GetString(result.Buffer);
+
+					Dispatcher.Invoke(() =>
+					{
+						LiveChatListBox.Items.Add(receivedMessage);
+					});
+				}
+				catch(Exception ex)
+				{
+					MessageBox.Show($"Error receiving message: {ex.Message}");
+				}
+			}
+		}
+
 		private void SendButton_Click(object sender, RoutedEventArgs e)
 		{
 			if(!string.IsNullOrEmpty(MessageTextBox.Text))
 			{
+				string message = $"{UserId}: {MessageTextBox.Text}";
+				byte[] data = Encoding.UTF8.GetBytes(message);
 
+				udpClient.Send(data, data.Length, remoteEndPoint);
+
+				LiveChatListBox.Items.Add(message);
+
+				MessageTextBox.Clear();
 			}
-        }
+		}
 
 		private void DeleteButton_Click(object sender, RoutedEventArgs e)
 		{
+			if(LiveChatListBox.SelectedIndex >= 0)
+			{
+				LiveChatListBox.Items.RemoveAt(LiveChatListBox.SelectedIndex);
 
+				
+				string deleteCommand = $"DELETE {LiveChatListBox.SelectedIndex}";
+				byte[] deleteData = Encoding.UTF8.GetBytes(deleteCommand);
+				udpClient.Send(deleteData, deleteData.Length, remoteEndPoint);
+			}
 		}
 	}
 }

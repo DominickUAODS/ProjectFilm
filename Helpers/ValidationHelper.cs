@@ -1,13 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectFilm.Data;
-using ProjectFilm.Model;
 using ProjectFilm.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ProjectFilm.Helpers
 {
@@ -61,14 +55,6 @@ namespace ProjectFilm.Helpers
                 return true;
             }
             return false;
-
         }
-
-
     }
-
-
 }
-
-
-

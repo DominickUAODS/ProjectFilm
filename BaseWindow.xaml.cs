@@ -5,6 +5,7 @@ using ProjectFilm.Model;
 using ProjectFilm.Api;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using ProjectFilm.Data;
 
 namespace ProjectFilm
 {
@@ -23,6 +24,7 @@ namespace ProjectFilm
 
 		public BaseWindow()
 		{
+			DbInit.EnsurePopulate().GetAwaiter();
 			InitializeComponent();
 			PreLoadGenre();
 			LoadTopMovies();

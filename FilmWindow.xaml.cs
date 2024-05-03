@@ -61,7 +61,7 @@ namespace ProjectFilm
 					DateTime releaseDate;
 					DateTime.TryParse(movie.release_date, out releaseDate);
 
-					ReleaseYearLabel.Content = $"{(releaseDate.Year.ToString())}";
+					ReleaseYearLabel.Content = $"({releaseDate.Year.ToString()})";
 
 					string genreStr = string.Empty;
 					if(movie.genres != null)
@@ -135,8 +135,8 @@ namespace ProjectFilm
 					MovieName = movie.original_title,
 					DateOfPost = DateTime.Now,
 					TextOfReview = ReviewsTextBox.Text,
-					//UserId = UserId
-					UserId = Guid.NewGuid()
+					UserId = UserId
+					//UserId = Guid.NewGuid()
 				};
 
 				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
@@ -170,6 +170,19 @@ namespace ProjectFilm
 					ReviewsListBox.Items.Add($"No reviews for current film");
 				}
 			}
+		}
+
+		private void SendButton_Click(object sender, RoutedEventArgs e)
+		{
+			if(!string.IsNullOrEmpty(MessageTextBox.Text))
+			{
+
+			}
+        }
+
+		private void DeleteButton_Click(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }

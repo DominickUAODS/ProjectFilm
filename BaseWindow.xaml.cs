@@ -138,7 +138,7 @@ namespace ProjectFilm
 							Content = genre.name, Tag = genre.id
 						};
 
-						categoryButton.Click += CategoryButton_Click;
+						ApplyButtonStyle(categoryButton);
 
 						CategoryPanel.Children.Add(categoryButton);
 					}
@@ -154,7 +154,15 @@ namespace ProjectFilm
 			}
 		}
 
-		private async void LoadTopMovies(int index = 0)
+		//addded
+        private void ApplyButtonStyle(Button button)
+        {
+            button.Style = (Style)FindResource("CustomButtonStyle");
+            button.Click += CategoryButton_Click; 
+        }
+
+
+        private async void LoadTopMovies(int index = 0)
 		{
 			try
 			{

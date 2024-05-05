@@ -1,47 +1,99 @@
 ﻿<Window x:Class="ProjectFilm.FilmWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ProjectFilm"
-        mc:Ignorable="d"
-        Title="FilmWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Button x:Name="UserProfileButton" Grid.Column="4" Content="User profile" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" FontSize="8" Click="UserProfileButton_Click"/>
-        <Image Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="149" Margin="61,43,0,0" Grid.RowSpan="3" VerticalAlignment="Top" Width="119"/>
-        <TextBox x:Name="FilmName" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="37,41,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="380"/>
-        <TextBox x:Name="FilmDetails" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="37,59,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="380"/>
-        <TextBox x:Name="FilmDetailsOtherData" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="37,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="380" Grid.Row="1"/>
-        <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="BackButton_Click"/>
-        <TabControl Grid.Row="2" Margin="24,24,33,10" Grid.ColumnSpan="5" Grid.RowSpan="3">
-            <TabItem Header="Рецензия">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Обсуждения">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </TabItem>
-        </TabControl>
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:ProjectFilm"
+		mc:Ignorable="d"
+		Title="FilmWindow" Height="450" Width="800">
 
-    </Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<Button x:Name="UserProfileButton" Grid.Column="4" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" FontSize="8" Click="UserProfileButton_Click"
+		BorderBrush="{x:Null}" Background="{x:Null}" Height="33" Width="45">
+			<Button.Template>
+				<ControlTemplate>
+					<Image Source="Image\user_profile_icon_208590.png" Stretch="Uniform" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+
+
+		<Button x:Name="FilmButton" Margin="25,10,130,45" Grid.RowSpan="3" Background="LightBlue" Grid.ColumnSpan="2">
+			<Grid>
+				<Image Source="{Binding poster_path}" Width="auto" Height="auto"/>
+			</Grid>
+		</Button>
+
+		<Button x:Name="BackButton" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Click="BackButton_Click" Grid.Column="4" Height="33" Width="40" BorderBrush="{x:Null}" Background="{x:Null}">
+			<Button.Template>
+				<ControlTemplate>
+					<Image Source="Image\BackArrow.png" Stretch="Uniform" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+
+
+		<TabControl Grid.Row="2" Margin="24,43,33,10" Grid.ColumnSpan="5" Grid.RowSpan="3">
+			<TabItem Header="Reviews">
+				<Grid Background="#FFE5E5E5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="695*" />
+						<ColumnDefinition Width="35*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="140*" />
+						<RowDefinition Height="40*" />
+					</Grid.RowDefinitions>
+					<TextBox x:Name="ReviewsTextBox" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="685" Height="20" Grid.Row="1" />
+					<Button x:Name="ReviewAddButton" Content="Add" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="10" Width="25" Click="ReviewAddButton_Click" Grid.Column="1" Height="20" Grid.Row="1"/>
+					<ListBox x:Name="ReviewsListBox" Grid.ColumnSpan="2" Margin="0,0,0,40" Grid.RowSpan="2"/>
+					<Label Content="Add Your Review:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="10" Height="22" Width="86" Grid.Row="1" />
+				</Grid>
+			</TabItem>
+			<TabItem Header="Live Chat">
+				<Grid Background="#FFE5E5E5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="407*" />
+						<ColumnDefinition Width="230*" />
+						<ColumnDefinition Width="80*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<ListBox x:Name="LiveChatListBox" Grid.RowSpan="2" SelectionMode="Single" />
+					<TextBox x:Name="MessageTextBox" Grid.RowSpan="2" Grid.Column="1" TextWrapping="Wrap" />
+					<Button x:Name="SendButton" Grid.Column="2" Content="Send" HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Top" Width="40" Height="20" Click="SendButton_Click"/>
+					<Button x:Name="DeleteButton" Grid.Column="2" Content="Delete" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="40" Height="20" Click="DeleteButton_Click"/>
+				</Grid>
+			</TabItem>
+		</TabControl>
+
+		<Label x:Name="OriginalTitleLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="46,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="3" Width="424" FontFamily="Comic Sans MS" FontWeight="Bold" FontSize="16" Foreground="#FFEAE5E5"/>
+		<Label x:Name="ReleaseYearLabel" Grid.Column="4" Content="" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" Foreground="#FFEAE5E5" Width="55"/>
+		<Label x:Name="FilmInfoLabel" Grid.Column="1" Content="" HorizontalAlignment="Left" Margin="46,69,0,0" VerticalAlignment="Top" Grid.RowSpan="2" Grid.ColumnSpan="3" Width="424" FontFamily="Segoe UI Black" FontSize="14" Foreground="#FFEAE5E5"/>
+		<Label Grid.Column="1" Content="Overview" HorizontalAlignment="Left" Margin="46,10,0,0" Grid.Row="1" VerticalAlignment="Center" FontWeight="Bold" Foreground="White"/>
+		<!--<Label x:Name="OverviewLabel" Grid.Column="1" Content="" Margin="46,69,0,0" Grid.Row="1" VerticalAlignment="Top" FontStyle="Italic" Grid.RowSpan="2" Grid.ColumnSpan="4" Width="514" Height="56" Foreground="#FFEAE5E5" HorizontalAlignment="Left" />-->
+		<TextBlock x:Name="OverviewLabel" Grid.Column="1" Margin="46,69,0,0" Grid.Row="1" VerticalAlignment="Top" FontStyle="Italic" Grid.RowSpan="2" Grid.ColumnSpan="4" Width="514" Height="56" Foreground="#FFEAE5E5" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+	</Grid>
+
+	<Window.Background>
+		<ImageBrush x:Name="BackDropImage" ImageSource="{Binding backdrop_path}"/>
+	</Window.Background>
+
 </Window>

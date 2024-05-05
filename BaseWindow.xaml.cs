@@ -1,11 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using ProjectFilm.Model;
 using ProjectFilm.Api;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using ProjectFilm.Data;
 
 namespace ProjectFilm
 {
@@ -111,7 +109,7 @@ namespace ProjectFilm
 		private void SearchButton_Click(object sender, RoutedEventArgs e)
 		{
 			if(!string.IsNullOrEmpty(SearchTextBox.Text))
-			SearchMoviesByName(SearchTextBox.Text);
+				SearchMoviesByName(SearchTextBox.Text);
 		}
 
 		private void UserProfileButton_Click(object sender, RoutedEventArgs e)
@@ -135,10 +133,11 @@ namespace ProjectFilm
 					{
 						Button categoryButton = new Button
 						{
-							Content = genre.name, Tag = genre.id
+							Content = genre.name,
+							Tag = genre.id
 						};
 
-						categoryButton.Click += CategoryButton_Click;
+						ApplyButtonStyle(categoryButton);
 
 						CategoryPanel.Children.Add(categoryButton);
 					}
@@ -153,6 +152,14 @@ namespace ProjectFilm
 				MessageBox.Show($"Error loading genres: {ex.Message}");
 			}
 		}
+
+		//addded
+		private void ApplyButtonStyle(Button button)
+		{
+			button.Style = (Style)FindResource("CustomButtonStyle");
+			button.Click += CategoryButton_Click;
+		}
+
 
 		private async void LoadTopMovies(int index = 0)
 		{
@@ -304,6 +311,7 @@ namespace ProjectFilm
 		{
 			Button clickedButton = sender as Button;
 			Movie movie = clickedButton.DataContext as Movie;
+
 			if(movie != null)
 			{
 				FilmWindow filmWindow = new FilmWindow(movie.id);

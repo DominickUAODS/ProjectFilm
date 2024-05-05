@@ -6,14 +6,47 @@
 		xmlns:local="clr-namespace:ProjectFilm"
 		mc:Ignorable="d"
 		Title="BaseWindow" Height="450" Width="800">
-	<Grid>
+	<Window.Resources>
+		<Style x:Key="CustomButtonStyle" TargetType="Button">
+			<Setter Property="FontFamily" Value="Cascadia Mono"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Background" Value="#FF8EB9ED"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontWeight" Value="UltraBold"/>
+			<Setter Property="BorderBrush" Value="{x:Null}"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+							<TextBlock Text="{TemplateBinding Content}"
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+	</Window.Resources>
+	<Window.BorderBrush>
+		<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+			<GradientStop Color="Black"/>
+			<GradientStop Color="#FFA4A4A4" Offset="1"/>
+		</LinearGradientBrush>
+	</Window.BorderBrush>
+	<Grid Background="#FFDADADA">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="59*" />
 			<ColumnDefinition Width="101*"/>
 			<ColumnDefinition Width="160*" />
 			<ColumnDefinition Width="160*" />
 			<ColumnDefinition Width="160*" />
-			<ColumnDefinition Width="160*" />
+			<ColumnDefinition Width="55*" />
+			<ColumnDefinition Width="105*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition />
@@ -22,56 +55,74 @@
 			<RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		
-		<StackPanel x:Name="CategoryPanel" Margin="0,15,0,15" Grid.RowSpan="5" Grid.ColumnSpan="2" Background="LightBlue"/>
-		
-		<Button x:Name="SearchButton" Grid.Column="5" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" Click="SearchButton_Click" Background="LightBlue"/>
 
-		<Button x:Name="UserProfileButton" Grid.Column="5" HorizontalAlignment="Left" Margin="114,10,0,0" VerticalAlignment="Top" FontSize="8" Click="UserProfileButton_Click"
-	   BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Width="46">
-			<Button.Template>
-				<ControlTemplate>
-					<Image Source="Image\user_profile_icon_208590.png" Stretch="Uniform" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
-				</ControlTemplate>
-			</Button.Template>
-		</Button>
 
-		<Button x:Name="FilmButton0" Grid.Column="2" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="LightBlue" Click="FilmButton_Click">
+		<StackPanel x:Name="CategoryPanel" Margin="0,36,0,35" Grid.RowSpan="5" Grid.ColumnSpan="2" Background="LightBlue"/>
+
+		<Button x:Name="SearchButton" Grid.Column="5" Content="Search" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.426,0.451" Click="SearchButton_Click"  BorderBrush="{x:Null}" FontFamily="Cascadia Mono SemiBold" FontSize="15" Foreground="#FF8EB9ED" Background="White" FontWeight="UltraBold" Grid.ColumnSpan="2"/>
+
+
+
+		<Button x:Name="FilmButton0" Grid.Column="2" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="#FF8EB9ED" Click="FilmButton_Click">
 			<Grid>
 				<Image Source="{Binding poster_path}" Width="150" Margin="0,5,0,40"/>
 				<TextBlock Text="{Binding title}" Margin="0,238,0,5" Height="30" TextAlignment="Center" FontSize="10" TextWrapping="Wrap" Width="150"/>
 			</Grid>
 		</Button>
 
-		<Button x:Name="FilmButton1" Grid.Column="3" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="LightBlue" Click="FilmButton_Click">
+		<Button x:Name="FilmButton1" Grid.Column="3" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="#FF8EB9ED" Click="FilmButton_Click">
 			<Grid>
 				<Image Source="{Binding poster_path}" Width="150" Margin="0,5,0,40"/>
 				<TextBlock Text="{Binding title}" Margin="0,238,0,5" Height="30" TextAlignment="Center" FontSize="10" TextWrapping="Wrap" Width="150"/>
 			</Grid>
 		</Button>
 
-		<Button x:Name="FilmButton2" Grid.Column="4" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="LightBlue" Click="FilmButton_Click">
+		<Button x:Name="FilmButton2" Grid.Column="4" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="#FF8EB9ED" Click="FilmButton_Click">
 			<Grid>
 				<Image Source="{Binding poster_path}" Width="150" Margin="0,5,0,40"/>
 				<TextBlock Text="{Binding title}" Margin="0,238,0,5" Height="30" TextAlignment="Center" FontSize="10" TextWrapping="Wrap" Width="150"/>
 			</Grid>
 		</Button>
 
-		<Button x:Name="FilmButton3" Grid.Column="5" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="LightBlue" Click="FilmButton_Click">
+		<Button x:Name="FilmButton3" Grid.Column="5" Margin="3,10,3,60" Grid.RowSpan="4" Grid.Row="1" Background="#FF8EB9ED" Click="FilmButton_Click" Grid.ColumnSpan="2">
 			<Grid>
 				<Image Source="{Binding poster_path}" Width="150" Margin="0,5,0,40"/>
 				<TextBlock Text="{Binding title}" Margin="0,238,0,5" Height="30" TextAlignment="Center" FontSize="10" TextWrapping="Wrap" Width="150"/>
 			</Grid>
 		</Button>
-		
+
 		<!-- пагинация -->
 		<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,44,0,0" Grid.Row="4">
-			<Button x:Name="PreviousButton" Content="Previous" Click="PreviousPage_Click" Margin="5" Background="LightBlue"/>
-			<TextBlock Name="PageInfo" Text="Page 1" Margin="5"/>
-			<Button x:Name="NextPage" Content="Next" Click="NextPage_Click" Margin="5" Background="LightBlue"/>
+			<Button x:Name="PreviousButton" Content="Previous" Click="PreviousPage_Click" Margin="5" Background="LightBlue">
+				<Button.Template>
+					<ControlTemplate>
+						<Image Source="Image\Blue-Arrow-PNG-l.png" Stretch="Uniform" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
+					</ControlTemplate>
+				</Button.Template>
+			</Button>
+			<TextBlock x:Name="PageInfo" Text="Page 1" FontFamily="Cascadia Mono SemiBold" FontSize="15" Foreground="#FF8EB9ED"  FontWeight="UltraBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			<Button x:Name="NextPage" Content="Next" Click="NextPage_Click" Margin="5" Background="LightBlue">
+				<Button.Template>
+					<ControlTemplate>
+						<Image Source="Image\Blue-Arrow-PNG-r.png" Stretch="Uniform" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
+					</ControlTemplate>
+				</Button.Template>
+			</Button>
 		</StackPanel>
-		
-		<TextBox x:Name="SearchTextBox" Grid.Column="2" HorizontalAlignment="Left" Margin="17,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="450" Grid.ColumnSpan="3"/>
-	
+
+		<TextBox x:Name="SearchTextBox" Grid.Column="2" HorizontalAlignment="Left" Margin="17,0,0,17" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="450" Grid.ColumnSpan="3"/>
+		<StackPanel x:Name="CategoryPanel_Copy" Margin="0,0,0,51" Grid.ColumnSpan="7" Background="#FF8EB9ED">
+			<Button x:Name="UserProfileButton" FontSize="8" Click="UserProfileButton_Click"
+BorderBrush="{x:Null}" Background="{x:Null}" Height="26" Width="46" HorizontalAlignment="Right">
+				<Button.Template>
+					<ControlTemplate>
+						<Image Source="Image\user_profile_icon_208590.png" Stretch="Uniform" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
+					</ControlTemplate>
+				</Button.Template>
+			</Button>
+
+		</StackPanel>
+
+
 	</Grid>
 </Window>

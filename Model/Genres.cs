@@ -1,7 +1,7 @@
 ﻿namespace ProjectFilm.Model
 {
-    public class Genres
-    {
-        public List<Genre> genres { get; set; }
-    }
+	public class Genres
+	{
+		public List<Genre> genres { get; set; }
+	}
 }

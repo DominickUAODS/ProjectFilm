@@ -24,7 +24,9 @@ namespace ProjectFilm.Data
 			modelBuilder.Entity<User>()
 				.HasMany(r => r.Reviews)
 				.WithOne(u => u.User);
-			modelBuilder.Entity<User>().HasOne(i => i.ImageForBase).WithMany(u => u.user);
+			modelBuilder.Entity<User>()
+				.HasOne(i => i.ImageForBase)
+				.WithMany(u => u.user);
 		}
 	}
 }

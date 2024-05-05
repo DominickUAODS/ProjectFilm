@@ -1,11 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using ProjectFilm.Model;
 using ProjectFilm.Api;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using ProjectFilm.Data;
 
 namespace ProjectFilm
 {

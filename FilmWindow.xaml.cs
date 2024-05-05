@@ -171,6 +171,7 @@ namespace ProjectFilm
 				}
 
 				ReviewsTextBox.Clear();
+
 				await LoadReviews();
 			}
 			else
@@ -192,7 +193,7 @@ namespace ProjectFilm
 					foreach(var review in reviews)
 					{
 						//ReviewsListBox.ItemsSource = review.User.UserName;
-						ReviewsListBox.ItemsSource = _user.UserName;
+						//ReviewsListBox.ItemsSource = _user.whew;
 						ReviewsListBox.Items.Add(review.TextOfReview);
 					}
 				}
@@ -226,7 +227,8 @@ namespace ProjectFilm
 
 							foreach(var chatMessage in chatMessages)
 							{
-								string displayedMessage = $"{chatMessage.UserId}: {chatMessage.Text}";
+								string displayedMessage = $"{chatMessage.Date}-{chatMessage.User.UserName} : {chatMessage.Text}";
+
 								LiveChatListBox.Items.Add(displayedMessage);
 							}
 						});
@@ -247,8 +249,8 @@ namespace ProjectFilm
 				{
 					Id = Guid.NewGuid(),
 					Text = MessageTextBox.Text,
-					Date = DateTime.Now,
-					UserId = _user.Id
+					//Date = DateTime.Now,
+					UserId = _user.Id,
 					//User = _user
 				};
 
@@ -258,7 +260,7 @@ namespace ProjectFilm
 					await context.SaveChangesAsync();
 				}
 
-				string newMessage = $"{_user.UserName} : {newChatMessage.Text}";
+				string newMessage = $"{newChatMessage.Date}-{newChatMessage.User.UserName} : {newChatMessage.Text}";
 
 				LiveChatListBox.Items.Add(newMessage);
 

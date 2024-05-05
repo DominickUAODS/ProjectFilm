@@ -100,7 +100,6 @@ namespace ProjectFilm
 					userToUpdate.Email = newUserEmail;
 					await context.SaveChangesAsync();
 					MessageBox.Show("User updated successfully!");
-
 				}
 				emailUsertxtBox.Text = newUserEmail;
 			}
@@ -169,7 +168,7 @@ namespace ProjectFilm
 
 		public void IsRightLogin()
 		{
-			ProjectFilm.Model.User u = context.Users.FirstOrDefault(u => u.UserName == EnterOldTxtBox.Text);
+			User u = context.Users.FirstOrDefault(u => u.UserName == EnterOldTxtBox.Text);
 			if(u != null)
 			{
 				if(helper.IsEnglishLettersAndNumbers(EnterNewTextBox.Text))

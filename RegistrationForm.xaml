@@ -31,9 +31,9 @@
         <Button  Click="SignInButton_Click" Grid.Row="8" x:Name="buttonSignIn"  Content="Sign In" HorizontalAlignment="Center" VerticalAlignment="Center" Width="182" Height="39" Foreground="#FFFFFEFE" Background="#FF8EB9ED" BorderBrush="{x:Null}" FontFamily="Cascadia Mono SemiBold" FontSize="20"/>
         <Label x:Name="labelQuestion" Content="Already have account?" HorizontalAlignment="Left" Margin="255,0,0,0" Grid.Row="9" VerticalAlignment="Center" Width="160" FontFamily="Cascadia Mono SemiBold" FontSize="12"/>
         <Button  Click="GoToLogInButton_Click" Content ="Log In" x:Name ="GoToLogInButton" HorizontalAlignment="Left" Margin="420,0,0,0" Grid.Row="9" VerticalAlignment="Center" RenderTransformOrigin="-4.48,0.074"  Foreground="#FFFFFEFE" Background="#FF8EB9ED" BorderBrush="{x:Null}" FontFamily="Cascadia Mono SemiBold" FontSize="15"/>
-        <Button Click="buttonSee_Click" x:Name="buttonSee" HorizontalAlignment="Left" Width="53" Margin="437,0,0,0" Grid.Row="7" VerticalAlignment="Center" Height="31" BorderBrush="{x:Null}">
+        <Button Click="buttonSee_Click" x:Name="buttonSee" HorizontalAlignment="Left" Width="53" Margin="424,0,0,0" Grid.Row="7" VerticalAlignment="Center" Height="31" BorderBrush="{x:Null}" Background="White">
             <Button.Content>
-                <Image Source="Image/basic-eye-closed_98240.png" Stretch="UniformToFill" Height="23" Width="26" RenderTransformOrigin="0.6,0.168" />
+                <Image Source="Image\basic-eye-closed_98240.png" Stretch="Fill" Height="21" Width="34" />
             </Button.Content>
         </Button>
     </Grid>

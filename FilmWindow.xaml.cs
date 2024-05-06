@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ProjectFilm.Api;
 using ProjectFilm.Model;
-using ProjectFilm.Data;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using ProjectFilm.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Sockets;
 using System.Net;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace ProjectFilm
 {
@@ -19,17 +20,17 @@ namespace ProjectFilm
 		private int filmId;
 		private string pathImage = GetImagePath();
 		private Movie movie;
-		//private Guid _UserId;
-		private User _user;
+		//private Guid UserId;
+		Model.User user = new Model.User();
 		//public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
 
 		/// chat data 
 		private UdpClient udpClient;
 		private IPEndPoint remoteEndPoint;
-		private string serverIp = "127.0.0.1";
-		private int serverPort = 9090;
+        private string serverIp = "127.0.0.1";
+        private int serverPort = 9090;
 
-		public FilmWindow(int id)
+        public FilmWindow(int id)
 		{
 			InitializeComponent();
 			filmId = id;
@@ -37,30 +38,30 @@ namespace ProjectFilm
 			//LoadFilmDetailsAsync();
 			//LoadReviews();
 			InitializeChat();
-			GetValidUser();
 		}
 
 		private async void InitializeAsync()
 		{
 			await LoadFilmDetailsAsync();
+			GetValidUser();
 			await LoadReviews();
 		}
 
-		public void GetValidUser()
-		{
-			User LogInUser = SignInForm.GetUser();
-			User SignInUser = RegistrationForm.GetUser();
-			if(LogInUser == null)
-			{
-				_user = SignInUser;
-			}
-			else
-			{
-				_user = LogInUser;
-			}
-		}
+        public void GetValidUser()
+        {
+            ProjectFilm.Model.User LogInUser = SignInForm.GetUser();
+            ProjectFilm.Model.User SignInUser = RegistrationForm.GetUser();
+            if (LogInUser == null)
+            {
+                user = SignInUser;
+            }
+            else
+            {
+                user = LogInUser;
+            }
+        }
 
-		private async Task LoadFilmDetailsAsync()
+        private async Task LoadFilmDetailsAsync()
 		{
 			try
 			{
@@ -159,19 +160,32 @@ namespace ProjectFilm
 					MovieName = movie.original_title,
 					DateOfPost = DateTime.Now,
 					TextOfReview = ReviewsTextBox.Text,
-					UserId = _user.Id
-					//User = _user
+					UserId = user.Id
 					//UserId = Guid.NewGuid()
 				};
 
-				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
-				{
-					context.Reviews.Add(newReview);
-					await context.SaveChangesAsync();
-				}
+                //using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+                //{
+                //	context.Reviews.Add(newReview);
+                //	await context.SaveChangesAsync();
+                //}
 
-				ReviewsTextBox.Clear();
+                using (var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+                {
+                     await context.Users.FindAsync(user.Id);
+                    if (user != null)
+                    {
+                        newReview.UserId = user.Id;
+                        context.Reviews.Add(newReview);
+                        await context.SaveChangesAsync();
+                    }
+                    else
+                    {
+						MessageBox.Show("Error");
+                    }
+                }
 
+                ReviewsTextBox.Clear();
 				await LoadReviews();
 			}
 			else
@@ -183,19 +197,13 @@ namespace ProjectFilm
 		private async Task LoadReviews()
 		{
 			ReviewsListBox.Items.Clear();
-
 			using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
 			{
 				var reviews = await context.Reviews.Where(r=>r.MovieName == movie.original_title).ToListAsync();
 
 				if(reviews.Count != 0)
 				{
-					foreach(var review in reviews)
-					{
-						//ReviewsListBox.ItemsSource = review.User.UserName;
-						//ReviewsListBox.ItemsSource = _user.whew;
-						ReviewsListBox.Items.Add(review.TextOfReview);
-					}
+					ReviewsListBox.ItemsSource = reviews;
 				}
 				else
 				{
@@ -224,11 +232,9 @@ namespace ProjectFilm
 						Dispatcher.Invoke(() =>
 						{
 							LiveChatListBox.Items.Clear();
-
 							foreach(var chatMessage in chatMessages)
 							{
-								string displayedMessage = $"{chatMessage.Date}-{chatMessage.User.UserName} : {chatMessage.Text}";
-
+								string displayedMessage = $"{chatMessage.UserId}: {chatMessage.Text}";
 								LiveChatListBox.Items.Add(displayedMessage);
 							}
 						});
@@ -249,9 +255,8 @@ namespace ProjectFilm
 				{
 					Id = Guid.NewGuid(),
 					Text = MessageTextBox.Text,
-					//Date = DateTime.Now,
-					UserId = _user.Id,
-					//User = _user
+					Date = DateTime.Now,
+					UserId = user.Id
 				};
 
 				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
@@ -260,7 +265,7 @@ namespace ProjectFilm
 					await context.SaveChangesAsync();
 				}
 
-				string newMessage = $"{newChatMessage.Date}-{newChatMessage.User.UserName} : {newChatMessage.Text}";
+				string newMessage = $"{newChatMessage.UserId}: {newChatMessage.Text}";
 
 				LiveChatListBox.Items.Add(newMessage);
 
@@ -280,7 +285,7 @@ namespace ProjectFilm
 					string selectedUserId = parts[0].Trim();
 					string selectedText = parts[1].Trim();
 
-					if(selectedUserId == _user.Id.ToString())
+					if(selectedUserId == user.Id.ToString())
 					{
 						using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
 						{

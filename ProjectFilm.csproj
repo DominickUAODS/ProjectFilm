@@ -9,9 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Image\1490793853-user-interface15_82360.png" />
+    <None Remove="Image\BackArrow.png" />
+    <None Remove="Image\basic-eye-closed_98240.png" />
+    <None Remove="Image\Blue-Arrow-PNG-l.png" />
+    <None Remove="Image\Blue-Arrow-PNG-r.png" />
+    <None Remove="Image\user_profile_icon_208590.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\1490793853-user-interface15_82360.png" />
+    <Resource Include="Image\BackArrow.png" />
+    <Resource Include="Image\basic-eye-closed_98240.png" />
+    <Resource Include="Image\Blue-Arrow-PNG-l.png" />
+    <Resource Include="Image\Blue-Arrow-PNG-r.png" />
+    <Resource Include="Image\user_profile_icon_208590.png" />
   </ItemGroup>
 
   <ItemGroup>

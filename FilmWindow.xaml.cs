@@ -234,39 +234,49 @@ namespace ProjectFilm
 			}
 		}
 
-		private async Task StartListening()
-		{
-			while(true)
-			{
-				try
-				{
-					using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
-					{
-						var chatMessages = await context.Messages.ToListAsync();
+		//private async Task StartListening()
+		//{
+		//	while(true)
+		//	{
+		//		try
+		//		{
+		//			using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+		//			{
+		//				var chatMessages = await context.Messages.OrderBy(m=>m.Date).ToListAsync();
 
-						Dispatcher.Invoke(async () =>
-						{
-							LiveChatListBox.Items.Clear();
+		//				Dispatcher.Invoke(async () =>
+		//				{
+		//					LiveChatListBox.Items.Clear();
 
-							foreach(var chatMessage in chatMessages)
-							{
-								string userName = await GetUserNameById(chatMessage.UserId);
-								string displayedMessage = $"{chatMessage.Date} {userName} : {chatMessage.Text}";
-								//LiveChatListBox.Items.Add($"{chatMessage.Date} {userName}");
-								//LiveChatListBox.Items.Add(chatMessage.Text);
-								LiveChatListBox.Items.Add(displayedMessage);
-							}
-						});
-					}
-				}
-				catch(Exception ex)
-				{
-					MessageBox.Show($"Error receiving message: {ex.Message}");
-				}
+		//					foreach(var chatMessage in chatMessages)
+		//					{
+		//						string userName = await GetUserNameById(chatMessage.UserId);
 
-				await Task.Delay(TimeSpan.FromSeconds(2));
-			}
-		}
+		//						var listItem = new ChatMessageViewModel
+		//						{
+		//							ChatDate = chatMessage.Date,
+		//							ChatUserName = userName,
+		//							ChatUserId = chatMessage.UserId,
+		//							ChatText = chatMessage.Text
+		//						};
+		//						//string displayedMessage = $"{chatMessage.Date} {userName} : {chatMessage.Text}";
+		//						//LiveChatListBox.Items.Add($"{chatMessage.Date} {userName}");
+		//						//LiveChatListBox.Items.Add(chatMessage.Text);
+		//						//LiveChatListBox.Items.Add(displayedMessage);
+		//						LiveChatListBox.Items.Add(listItem);
+		//					}
+		//				});
+		//			}
+		//		}
+		//		catch(Exception ex)
+		//		{
+		//			MessageBox.Show($"Error receiving message: {ex.Message}");
+		//		}
+
+		//		//await Task.Delay(TimeSpan.FromSeconds(2));
+		//		await Task.Delay(2000);
+		//	}
+		//}
 
 		private async void SendButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -286,9 +296,20 @@ namespace ProjectFilm
 					await context.SaveChangesAsync();
 				}
 
-				string newMessage = $"{newChatMessage.UserId}: {newChatMessage.Text}";
+				string userName = await GetUserNameById(newChatMessage.UserId);
 
-				LiveChatListBox.Items.Add(newMessage);
+				//string newMessage = $"{newChatMessage.Date} {userName} : {newChatMessage.Text}";
+
+				var listItem = new ChatMessageViewModel
+				{
+					ChatDate = newChatMessage.Date,
+					ChatUserName = userName,
+					ChatUserId = newChatMessage.UserId,
+					ChatText = newChatMessage.Text
+				};
+
+				//LiveChatListBox.Items.Add(newMessage);
+				LiveChatListBox.Items.Add(listItem);
 
 				MessageTextBox.Clear();
 			}
@@ -298,20 +319,21 @@ namespace ProjectFilm
 		{
 			if(LiveChatListBox.SelectedIndex >= 0)
 			{
-				string selectedMessage = LiveChatListBox.SelectedItem.ToString();
-				string[] parts = selectedMessage.Split(' ');
+				//string selectedMessage = LiveChatListBox.SelectedItem.ToString();
+				//string[] parts = selectedMessage.Split(' ');
+				int index = LiveChatListBox.SelectedIndex;
+				var selectedMessage = LiveChatListBox.SelectedItem as ChatMessageViewModel;
 
-				if(parts.Length >= 2)
+				if(selectedMessage != null)
 				{
-					string selectedUserId = parts[0].Trim();
-					string selectedText = parts[1].Trim();
+					var ChatUserId = selectedMessage.ChatUserId;
+					var ChatText = selectedMessage.ChatText;
 
-					if(selectedUserId == _user.Id.ToString())
+					if(ChatUserId == _user.Id)
 					{
 						using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
 						{
-							var chatMessage = await context.Messages
-								.FirstOrDefaultAsync(msg => msg.UserId.ToString() == selectedUserId && msg.Text == selectedText);
+							var chatMessage = await context.Messages.FirstOrDefaultAsync(msg => msg.UserId == ChatUserId && msg.Text == ChatText);
 
 							if(chatMessage != null)
 							{
@@ -319,15 +341,126 @@ namespace ProjectFilm
 								await context.SaveChangesAsync();
 							}
 						}
-
-						LiveChatListBox.Items.RemoveAt(LiveChatListBox.SelectedIndex);
+						//LiveChatListBox.Items.RemoveAt(LiveChatListBox.SelectedIndex);
+						LiveChatListBox.Items.RemoveAt(index);
 					}
 					else
 					{
 						MessageBox.Show("You can only delete your own messages.");
 					}
 				}
+
+				//if(parts.Length >= 2)
+				//{
+				//	string selectedUserId = parts[0].Trim();
+				//	string selectedText = parts[1].Trim();
+
+				//	if(selectedUserId == _user.Id.ToString())
+				//	{
+				//		using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+				//		{
+				//			var chatMessage = await context.Messages
+				//				.FirstOrDefaultAsync(msg => msg.UserId.ToString() == selectedUserId && msg.Text == selectedText);
+
+				//			if(chatMessage != null)
+				//			{
+				//				context.Messages.Remove(chatMessage);
+				//				await context.SaveChangesAsync();
+				//			}
+				//		}
+
+				//		LiveChatListBox.Items.RemoveAt(LiveChatListBox.SelectedIndex);
+				//	}
+				//	else
+				//	{
+				//		MessageBox.Show("You can only delete your own messages.");
+				//	}
+				//}
 			}
 		}
+
+		public event EventHandler<ChatMessage> NewMessageAdded;
+
+		protected void OnNewMessageAdded(ChatMessage newMessage)
+		{
+			NewMessageAdded?.Invoke(this, newMessage);
+		}
+
+		public async Task AddMessage(ChatMessage newMessage)
+		{
+			using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+			{
+				context.Messages.Add(newMessage);
+				await context.SaveChangesAsync();
+			}
+			OnNewMessageAdded(newMessage);
+		}
+
+		private async Task StartListening()
+		{
+			try
+			{
+				await LoadMessages();
+
+				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+				{
+					context.NewMessageAdded += async (sender, newMessage) =>
+					{
+						string userName = await GetUserNameById(newMessage.UserId);
+
+						var listItem = new ChatMessageViewModel
+						{
+							ChatDate = newMessage.Date,
+							ChatUserName = userName,
+							ChatUserId = newMessage.UserId,
+							ChatText = newMessage.Text
+						};
+
+						LiveChatListBox.Items.Add(listItem);
+					};
+				}
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show($"Error receiving message: {ex.Message}");
+			}
+		}
+
+		private async Task LoadMessages()
+		{
+			try
+			{
+				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+				{
+					var chatMessages = await context.Messages.OrderBy(m=>m.Date).ToListAsync();
+
+					Dispatcher.Invoke(async () =>
+					{
+						LiveChatListBox.Items.Clear();
+
+						foreach(var chatMessage in chatMessages)
+						{
+							string userName = await GetUserNameById(chatMessage.UserId);
+
+							var listItem = new ChatMessageViewModel
+							{
+								ChatDate = chatMessage.Date,
+								ChatUserName = userName,
+								ChatUserId = chatMessage.UserId,
+								ChatText = chatMessage.Text
+							};
+
+							LiveChatListBox.Items.Add(listItem);
+						}
+					});
+				}
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show($"Error loading messages: {ex.Message}");
+			}
+		}
+
+
 	}
 }

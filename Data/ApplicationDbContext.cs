@@ -5,7 +5,8 @@ namespace ProjectFilm.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+		public event EventHandler<ChatMessage> NewMessageAdded;
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
@@ -14,7 +15,8 @@ namespace ProjectFilm.Data
         public DbSet<ChatMessage> Messages { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ImageForBase> ImagesForBase { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().Property(e => e.RegisterDate).HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<ChatMessage>().Property(e => e.Date).HasDefaultValueSql("GETDATE()");

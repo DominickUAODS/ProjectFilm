@@ -8,4 +8,12 @@
         public Guid UserId { get; set; }
         public User? User { get; set; }
     }
+
+	public class ChatMessageViewModel
+	{
+		public DateTime ChatDate { get; set; }
+		public string ChatUserName { get; set; }
+		public Guid ChatUserId { get; set; }
+		public string ChatText { get; set; }
+	}
 }

@@ -28,14 +28,14 @@ namespace ProjectFilm.Data
 		public static async Task EnsurePopulate()
 		{
 			var context = new ApplicationDbContext(ConnectToJason());
-			if(!(context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
+			if (!(context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
 			{
 
 				context.Database.EnsureDeleted();
 				context.Database.EnsureCreated();
 			}
 
-			if(!await context.Users.AnyAsync())
+			if (!await context.Users.AnyAsync())
 			{
 				string salt = SecurityHelper.GenerateSalt(70);
 				string hashedPassword = SecurityHelper.HashPassword("qwerty", salt, 10101, 70);
@@ -47,18 +47,25 @@ namespace ProjectFilm.Data
 					HashedPassword = hashedPassword
 
 				});
+                ChatMessage chat = new ChatMessage { Text = "myText", Date = DateTime.Now };
+                ChatMessage chat2 = new ChatMessage { Text = "myText", Date = DateTime.Now };
+                List<ChatMessage> chats = new List<ChatMessage>();
+                chats.Add(chat);
+                chats.Add(chat2);
 
-				salt = SecurityHelper.GenerateSalt(70);
+                salt = SecurityHelper.GenerateSalt(70);
 				hashedPassword = SecurityHelper.HashPassword("192837", salt, 10101, 70);
 				context.Users.Add(new User
 				{
 					UserName = "Alex",
 					Email = "alex@gmail.com",
 					Salt = salt,
-					HashedPassword = hashedPassword
+					HashedPassword = hashedPassword,
+					Messages = chats
 
 				});
-				string folderPath = GetImagesFolderPath();
+
+                string folderPath = GetImagesFolderPath();
 				if(Directory.Exists(folderPath))
 				{
 					string[] imageFiles = Directory.GetFiles(folderPath, "*.jpg");

@@ -1,8 +1,8 @@
 ﻿namespace ProjectFilm.Model
 {
-	public class Genre
-	{
-		public int id { get; set; }
-		public string name { get; set; }
-	}
+    public class Genre
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+    }
 }

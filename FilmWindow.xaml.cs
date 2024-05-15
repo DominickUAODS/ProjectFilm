@@ -8,6 +8,7 @@ using ProjectFilm.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Sockets;
 using System.Net;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace ProjectFilm
 {
@@ -24,10 +25,12 @@ namespace ProjectFilm
 		//public static ApplicationDbContext context = new ApplicationDbContext(DbInit.ConnectToJason());
 
 		/// chat data 
-		private UdpClient udpClient;
-		private IPEndPoint remoteEndPoint;
-		private string serverIp = "127.0.0.1";
-		private int serverPort = 9090;
+		//private UdpClient udpClient;
+		//private IPEndPoint remoteEndPoint;
+		//private string serverIp = "127.0.0.1";
+		//private int serverPort = 9090;
+
+		HubConnection connection;
 
 		public FilmWindow(int id)
 		{
@@ -218,11 +221,13 @@ namespace ProjectFilm
 			}
 		}
 
-		private void InitializeChat()
+		private async void InitializeChat()
 		{
-			udpClient = new UdpClient();
-			remoteEndPoint = new IPEndPoint(IPAddress.Parse(serverIp), serverPort);
-			StartListening();
+			//udpClient = new UdpClient();
+			//remoteEndPoint = new IPEndPoint(IPAddress.Parse(serverIp), serverPort);
+			connection = new HubConnectionBuilder().WithUrl("https://localhost:7179/chat").Build();
+			await connection.StartAsync();
+			await StartListening();
 		}
 
 		public static async Task<string> GetUserNameById(Guid userId)
@@ -308,9 +313,11 @@ namespace ProjectFilm
 					ChatText = newChatMessage.Text
 				};
 
-				//LiveChatListBox.Items.Add(newMessage);
-				LiveChatListBox.Items.Add(listItem);
+				await connection.InvokeAsync("Send", listItem);
 
+				//LiveChatListBox.Items.Add(newMessage);
+				//LiveChatListBox.Items.Add(listItem);
+				
 				MessageTextBox.Clear();
 			}
 		}
@@ -343,6 +350,8 @@ namespace ProjectFilm
 						}
 						//LiveChatListBox.Items.RemoveAt(LiveChatListBox.SelectedIndex);
 						LiveChatListBox.Items.RemoveAt(index);
+						await connection.InvokeAsync("Receive");
+						//await LoadMessages();
 					}
 					else
 					{
@@ -379,22 +388,22 @@ namespace ProjectFilm
 			}
 		}
 
-		public event EventHandler<ChatMessage> NewMessageAdded;
+		//public event EventHandler<ChatMessage> NewMessageAdded;
 
-		protected void OnNewMessageAdded(ChatMessage newMessage)
-		{
-			NewMessageAdded?.Invoke(this, newMessage);
-		}
+		//protected void OnNewMessageAdded(ChatMessage newMessage)
+		//{
+		//	NewMessageAdded?.Invoke(this, newMessage);
+		//}
 
-		public async Task AddMessage(ChatMessage newMessage)
-		{
-			using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
-			{
-				context.Messages.Add(newMessage);
-				await context.SaveChangesAsync();
-			}
-			OnNewMessageAdded(newMessage);
-		}
+		//public async Task AddMessage(ChatMessage newMessage)
+		//{
+		//	using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+		//	{
+		//		context.Messages.Add(newMessage);
+		//		await context.SaveChangesAsync();
+		//	}
+		//	OnNewMessageAdded(newMessage);
+		//}
 
 		private async Task StartListening()
 		{
@@ -402,23 +411,32 @@ namespace ProjectFilm
 			{
 				await LoadMessages();
 
-				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+				connection.On<ChatMessageViewModel>("Receive", listItem =>
 				{
-					context.NewMessageAdded += async (sender, newMessage) =>
+					Dispatcher.Invoke(() =>
 					{
-						string userName = await GetUserNameById(newMessage.UserId);
-
-						var listItem = new ChatMessageViewModel
-						{
-							ChatDate = newMessage.Date,
-							ChatUserName = userName,
-							ChatUserId = newMessage.UserId,
-							ChatText = newMessage.Text
-						};
-
 						LiveChatListBox.Items.Add(listItem);
-					};
-				}
+						LiveChatListBox.ScrollIntoView(listItem);
+					});
+				});
+
+				//using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
+				//{
+				//	context.NewMessageAdded += async (sender, newMessage) =>
+				//	{
+				//		string userName = await GetUserNameById(newMessage.UserId);
+
+				//		var listItem = new ChatMessageViewModel
+				//		{
+				//			ChatDate = newMessage.Date,
+				//			ChatUserName = userName,
+				//			ChatUserId = newMessage.UserId,
+				//			ChatText = newMessage.Text
+				//		};
+
+				//		LiveChatListBox.Items.Add(listItem);
+				//	};
+				//}
 			}
 			catch(Exception ex)
 			{
@@ -433,26 +451,29 @@ namespace ProjectFilm
 				using(var context = new ApplicationDbContext(DbInit.ConnectToJason()))
 				{
 					var chatMessages = await context.Messages.OrderBy(m=>m.Date).ToListAsync();
-
-					Dispatcher.Invoke(async () =>
-					{
-						LiveChatListBox.Items.Clear();
-
-						foreach(var chatMessage in chatMessages)
+					//connection.On<ChatMessageViewModel>("Receive", (listItem) =>
+					//{
+						Dispatcher.Invoke(async () =>
 						{
-							string userName = await GetUserNameById(chatMessage.UserId);
+							//LiveChatListBox.Items.Clear();
 
-							var listItem = new ChatMessageViewModel
+							foreach(var chatMessage in chatMessages)
 							{
-								ChatDate = chatMessage.Date,
-								ChatUserName = userName,
-								ChatUserId = chatMessage.UserId,
-								ChatText = chatMessage.Text
-							};
+								string userName = await GetUserNameById(chatMessage.UserId);
 
-							LiveChatListBox.Items.Add(listItem);
-						}
-					});
+								var listItem = new ChatMessageViewModel
+								{
+									ChatDate = chatMessage.Date,
+									ChatUserName = userName,
+									ChatUserId = chatMessage.UserId,
+									ChatText = chatMessage.Text
+								};
+
+								LiveChatListBox.Items.Add(listItem);
+								LiveChatListBox.ScrollIntoView(listItem);
+							}
+						});
+					//});
 				}
 			}
 			catch(Exception ex)
